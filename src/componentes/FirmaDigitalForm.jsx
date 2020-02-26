@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import InputRFC from './InputRFC'
 import AlertCargando from './AlertCargando'
 import AlertError from './AlertError'
 import AlertAdvertencia from './AlertAdvertencia'
-// import Swal from "sweetalert2";
+import apoyosContext from "./../context/apoyos/apoyosContext";
 import AlertExito from './AlertExito';
 
 const FormaDigitalForm = () => {
+
+
+    const apoyoContext = useContext(apoyosContext);
+    const { certificado, llave, pass, cerValido, rfc, agregarCertYKey } = apoyoContext.checkCertState;
+
 
     /* state principal para envio de datos a State global */
     const [valores, setValores] = useState({
@@ -19,11 +24,12 @@ const FormaDigitalForm = () => {
         cerValido: null
     })
 
-    const [rfc, setRfc] = useState('')
+    const [rfcToCheck, setRfcToCheck] = useState('')
 
 
     const getDatos = e => {
         e.preventDefault();
+        
         if (e.target.name === 'llave' || e.target.name === 'certificado') {
             setValores({
                 ...valores,
@@ -39,9 +45,9 @@ const FormaDigitalForm = () => {
 
     const checkCERTKey = (e) => {
 
-                
+
         // return <Redirect push to='/target' />
-        
+
         /* ENVÍO DE API para varlidar certificado llave y password */
         const { certificado, llave, pass, rfc } = valores;
 
@@ -51,7 +57,7 @@ const FormaDigitalForm = () => {
             // myHeaders.append("Content-Type", "multipart/form-data; boundary=--------------------------563939394468331456539373");
 
             const formdata = new FormData();
-            // debugger
+
             formdata.append("cert", certificado.files[0], certificado.value);
             formdata.append("key", llave.files[0], llave.value);
             // formdata.append("rfc", rfc);
@@ -70,16 +76,14 @@ const FormaDigitalForm = () => {
                 .then(response => response.json())
                 .then(result => {
 
-                    setValores({
-                        ...valores,
-                        cerValido: result.valid
-                    })
+                    agregarCertYKey(valores)
+
 
                     if (result.valid) {
                         AlertExito('Firma valida!');
                         // TODO: si todo es correcto, redireccionar a /generales si es valido
                         /* Redireccion a llenado de datos */
-                        
+
                         // return <Redirect to='/login' />
                     } else {
                         AlertError('La ffirma no es valida');
@@ -104,7 +108,7 @@ const FormaDigitalForm = () => {
             ...valores,
             rfc: rfcUpper
         })
-        setRfc(rfcUpper);
+        setRfcToCheck(rfcUpper);
     }
 
 
@@ -113,8 +117,9 @@ const FormaDigitalForm = () => {
             <div>
                 <div className="row">
                     <InputRFC
+                        defaultValue={rfcToCheck}
                         name={'rfc'}
-                        rfc={rfc}
+                        rfc={rfcToCheck}
                         onTyping={rfcToMayus}
                     />
                 </div>
@@ -148,6 +153,7 @@ const FormaDigitalForm = () => {
                         <label><b>Contraseña de clave privada:</b></label>
                         <input
                             onBlur={getDatos}
+                            defaultValue={pass}
                             id="pass"
                             type="password"
                             name="pass"

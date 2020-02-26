@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function InputRFC({ rfc, onTyping, name }) {
+function InputRFC({ rfc, onTyping, name, defaultValue }) {
 
 
     const [valido, setValido] = useState('')
@@ -60,7 +60,7 @@ function InputRFC({ rfc, onTyping, name }) {
             <label>RFC:</label>
             <input
                 className={`form-control ${claseValido}`}
-                value={rfc}
+                value={defaultValue}
                 placeholder='Ingrese RFC'
                 onChange={onTyping}
                 onBlur={checkStructure}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import WizardSteps from '../componentes/WizardSteps';
+import apoyosContext from '../context/apoyos/apoyosContext'
 
 
 const Generales = () => {
@@ -10,9 +11,8 @@ const Generales = () => {
 
     return (
         <section>
-            
             <h1>Datos génerales</h1>
-
+            lorem
         </section>
     );
 }

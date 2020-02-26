@@ -1,11 +1,17 @@
 import React, { useReducer } from 'react'
 
+// se importan los types
+import {
+    REVISAR_FIRMA_DIGITAL,
+    AGREGAR_CERTIFICADO_KEY
+} from '../../types'
+/* se importan el context y se le pasa el reducer */
 import apoyosContext from "./apoyosContext";
 import apoyosReducer from './apoyosReducer'
 
 const ApoyosState = (props) => {
     const stateInicial = {
-        datosDeInicio: {
+        checkCertState: {
             certificado: '',
             llave: '',
             rfc: '',
@@ -17,13 +23,25 @@ const ApoyosState = (props) => {
     // dipatch ejecuta las acciones
     const [state, dispatch] = useReducer(apoyosReducer, stateInicial)
 
-    /* funciones para captura de datos y apoyos */
+
+
+    const agregarCertYKey = certificado => {
+        dispatch({
+            tipo: AGREGAR_CERTIFICADO_KEY,
+            payload: certificado
+        })
+    }
+
 
     return (
 
         <apoyosContext.Provider
             value={{
-                cerValido: state.cerValido
+                checkCertState: {
+                    ...state.checkCertState,
+                    agregarCertYKey
+                },
+
             }}
         >
             {props.children}
