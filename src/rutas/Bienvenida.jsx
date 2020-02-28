@@ -30,7 +30,9 @@ const Bienvenida = () => {
                 </div>
             </div>
             {/* FIRMA DIGITAL */}
-            <FormaDigitalForm />
+            <FormaDigitalForm
+                textButton={'Validar'}
+            />
         </div>
     )
 }
