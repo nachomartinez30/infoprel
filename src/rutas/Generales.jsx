@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import WizardSteps from '../componentes/WizardSteps';
-import apoyosContext from '../context/apoyos/apoyosContext'
+import React, { useState, useEffect, useContext } from 'react'
+import { Redirect } from 'react-router-dom'
+import apoyosContext from "./../context/apoyos/apoyosContext";
 
 
 const Generales = () => {
+    const apoyoContext = useContext(apoyosContext)
+    const { cerValido, rfc } = apoyoContext.checkCertState;
 
     const [infoGeneral, setInfoGeneral] = useState({
 
@@ -11,8 +13,9 @@ const Generales = () => {
 
     return (
         <section>
+            {!rfc && <Redirect to='/'/>}
             <h1>Datos génerales</h1>
-            lorem
+            lorem='{rfc}'
         </section>
     );
 }

@@ -14,9 +14,9 @@ const ApoyosState = (props) => {
         checkCertState: {
             certificado: '',
             llave: '',
-            rfc: '',
+            rfc: 'lorem',
             pass: '',
-            cerValido: null
+            cerValido: true
         }
     }
 

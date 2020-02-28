@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
+import { Redirect } from "react-router-dom";
 
 import InputRFC from './InputRFC'
 import AlertCargando from './AlertCargando'
@@ -8,11 +8,11 @@ import AlertAdvertencia from './AlertAdvertencia'
 import apoyosContext from "./../context/apoyos/apoyosContext";
 import AlertExito from './AlertExito';
 
-const FormaDigitalForm = () => {
+const FormaDigitalForm = (props) => {
 
 
     const apoyoContext = useContext(apoyosContext);
-    const { certificado, llave, pass, cerValido, rfc, agregarCertYKey } = apoyoContext.checkCertState;
+    const {  pass, agregarCertYKey } = apoyoContext.checkCertState;
 
 
     /* state principal para envio de datos a State global */
@@ -26,10 +26,13 @@ const FormaDigitalForm = () => {
 
     const [rfcToCheck, setRfcToCheck] = useState('')
 
+    useEffect(() => {
+        agregarCertYKey(valores);
+    }, [valores.cerValido, props.history])
 
     const getDatos = e => {
         e.preventDefault();
-        
+
         if (e.target.name === 'llave' || e.target.name === 'certificado') {
             setValores({
                 ...valores,
@@ -71,27 +74,27 @@ const FormaDigitalForm = () => {
             };
 
             AlertCargando('Validando credenciales...');
+            let API_REST = process.env.REACT_APP_BACKEN_URL;
 
-            fetch("http://localhost/siiac_ws_app/public/api/firma_digital/check_sign", requestOptions)
+
+            fetch(`${API_REST}firma_digital/check_sign`, requestOptions)
                 .then(response => response.json())
                 .then(result => {
 
-                    agregarCertYKey(valores)
-
-
                     if (result.valid) {
                         AlertExito('Firma valida!');
-                        // TODO: si todo es correcto, redireccionar a /generales si es valido
-                        /* Redireccion a llenado de datos */
-
-                        // return <Redirect to='/login' />
+                        setValores({
+                            ...valores,
+                            cerValido: result.valid
+                        })
+                        /* regarga de componente */
                     } else {
-                        AlertError('La ffirma no es valida');
+                        AlertError('La firma no es valida');
                     }
                 })
                 .catch(error => {
                     AlertError('Error al validar firma', error)
-                    console.log('error', error)
+                    console.error('error', error)
                 });
         } else {
             AlertAdvertencia('Faltan datos')
@@ -172,6 +175,8 @@ const FormaDigitalForm = () => {
                     </div>
                 </div>
             </div>
+            {/* si el certificado  */}
+            {valores.cerValido && <Redirect to='/generales'/>}
         </section>
     );
 }

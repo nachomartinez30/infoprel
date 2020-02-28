@@ -3,7 +3,7 @@ const AlertExito = (msg, txt = null) => {
     Swal.fire({
         title: msg,
         icon: 'success',
-        timer: 3000,
+        timer: 2000,
         text: txt,
         showConfirmButton: false
     })
