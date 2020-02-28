@@ -8,6 +8,8 @@ import Footer from './componentes/Footer';
 import Generales from './rutas/Generales';
 import WizardSteps from './componentes/WizardSteps';
 import ApoyosState from "./context/apoyos/apoyosState";
+import Apoyos from './rutas/Apoyos';
+import Firma from './rutas/Firma';
 
 
 function App() {
@@ -19,7 +21,8 @@ function App() {
           <Switch>
             <Route exact path="/" component={Bienvenida} />
             <Route exact path="/generales" component={Generales} />
-            {/* <Route exact path="/proyectos" component={Proyectos} /> */}
+            <Route exact path="/apoyos" component={Apoyos} />
+            <Route exact path="/firmar" component={Firma} />
           </Switch>
           <Footer />
         </Router>

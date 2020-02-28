@@ -28,7 +28,7 @@ const FormaDigitalForm = (props) => {
 
     useEffect(() => {
         agregarCertYKey(valores);
-    }, [valores.cerValido, props.history])
+    }, [valores.cerValido])
 
     const getDatos = e => {
         e.preventDefault();
@@ -46,7 +46,7 @@ const FormaDigitalForm = (props) => {
         }
     }
 
-    const checkCERTKey = (e) => {
+    const checkCERTKey = () => {
 
 
         // return <Redirect push to='/target' />
@@ -170,7 +170,7 @@ const FormaDigitalForm = (props) => {
                             id="btn_iniciar"
                             type="button"
                             className="btn btn-success">
-                            Validar
+                            {props.textButton}
                             </button>
                     </div>
                 </div>
