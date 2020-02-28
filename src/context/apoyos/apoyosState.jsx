@@ -1,8 +1,6 @@
 import React, { useReducer } from 'react'
-
 // se importan los types
 import {
-    REVISAR_FIRMA_DIGITAL,
     AGREGAR_CERTIFICADO_KEY
 } from '../../types'
 /* se importan el context y se le pasa el reducer */
@@ -10,13 +8,14 @@ import apoyosContext from "./apoyosContext";
 import apoyosReducer from './apoyosReducer'
 
 const ApoyosState = (props) => {
+
     const stateInicial = {
         checkCertState: {
             certificado: '',
             llave: '',
-            rfc: 'lorem',
+            rfc: (process.env.REACT_APP_RFC) ? process.env.REACT_APP_RFC : '',
             pass: '',
-            cerValido: true
+            cerValido: null
         }
     }
 
@@ -34,7 +33,6 @@ const ApoyosState = (props) => {
 
 
     return (
-
         <apoyosContext.Provider
             value={{
                 checkCertState: {
