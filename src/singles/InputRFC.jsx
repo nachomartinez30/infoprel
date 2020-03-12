@@ -1,19 +1,33 @@
 import React, { useState } from 'react'
 
-function InputRFC({ rfc, onTyping, name, defaultValue }) {
+function InputRFC(props) {
 
+    const {
+        rfc,
+        onKeyPressCapture,
+        name,
+        defaultValue,
+        placeholder,
+        className,
+        onChange,
+        key
+    } = props
 
     const [valido, setValido] = useState('')
     const [claseValido, setClaseValido] = useState('')
 
+
+
     const checkStructure = () => {
-        if (rfc.length > 1) {
-            const check = (rfcValido(rfc) === rfc) ? true : false;
-            setClaseValido((check) ? '' : 'noValido')
-            setValido(check);
-        } else {
-            setClaseValido('')
-            setValido('');
+        if (typeof rfc != 'undefined') {
+            if (rfc.length > 1) {
+                const check = (rfcValido(rfc) === rfc) ? true : false;
+                setClaseValido((check) ? '' : 'noValido')
+                setValido(check);
+            } else {
+                setClaseValido('')
+                setValido('');
+            }
         }
     }
 
@@ -56,13 +70,14 @@ function InputRFC({ rfc, onTyping, name, defaultValue }) {
 
 
     return (
-        <div className="col-md-6 col-md-offset-3">
-            <label>RFC:</label>
+        <React.Fragment>
             <input
-                className={`form-control ${claseValido}`}
+                key={key}
+                className={`${className} ${claseValido}`}
                 value={defaultValue}
-                placeholder='Ingrese RFC'
-                onChange={onTyping}
+                placeholder={placeholder}
+                onKeyPressCapture={onKeyPressCapture}
+                onChange={onChange}
                 onBlur={checkStructure}
                 name={name}
             />
@@ -73,7 +88,7 @@ function InputRFC({ rfc, onTyping, name, defaultValue }) {
                 </small>
                 </div>
             }
-        </div>
+        </React.Fragment>
     );
 }
 

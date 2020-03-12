@@ -1,7 +1,5 @@
 import React from 'react'
-import InputRFC from '../componentes/InputRFC';
-import FormaDigitalForm from '../componentes/FirmaDigitalForm';
-import Footer from '../componentes/Footer';
+import FormaDigitalForm from '../components/FirmaDigitalForm';
 
 const Bienvenida = () => {
     return (

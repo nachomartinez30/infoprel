@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import AlertError from '../componentes/AlertError'
+import AlertError from '../singles/AlertError'
+import SelectEstados from '../singles/SelectEstados'
 
-const EntidadSelects = ({ textoComplemetarioLabel, nameComplement }) => {
+const EntidadSelects = (props) => {
+    const { textoComplemetarioLabel, nameComplement, onBlur } = props
 
     const [entidad, setEntidad] = useState({
         estados: [
-            { value: '00', name: 'Selecciona' },
+            { value: '00', name: '--Seleccione--' },
             { value: '01', name: 'AGUASCALIENTES' },
             { value: '02', name: 'BAJA CALIFORNIA' },
             { value: '03', name: 'BAJA CALIFORNIA SUR' },
@@ -58,6 +60,7 @@ const EntidadSelects = ({ textoComplemetarioLabel, nameComplement }) => {
         fetch(`${API_REQUEST}inegi/municipios?paginate%5Bpage%5D=1&paginate%5BselectQuery%5D=null&paginate%5BbyColumn%5D=true&paginate%5Blimit%5D=600&paginate%5BorderBy%5D=nom_mun&paginate%5Bascending%5D=1&paginate%5BsQ%5D%5B0%5D%5BopT%5D=con&paginate%5BsQ%5D%5B0%5D%5Bop%5D=and&paginate%5BsQ%5D%5B0%5D%5BsQ%5D%5B0%5D%5BopT%5D=com&paginate%5BsQ%5D%5B0%5D%5BsQ%5D%5B0%5D%5Bop%5D=%3D&paginate%5BsQ%5D%5B0%5D%5BsQ%5D%5B0%5D%5BsQ%5D%5Bcve_ent%5D=${cve_estado}`, requestOptions)
             .then(response => response.json())
             .then(result => {
+                result.data.unshift({ municipio_id: '', cve_ent: '', cve_mun: '', nom_mun: 'Seleccione', created_at: '', updated_at: '', cve_inegi: '' })
                 /* setMunicipios a estad principal */
                 setEntidad({
                     ...entidad,
@@ -85,6 +88,8 @@ const EntidadSelects = ({ textoComplemetarioLabel, nameComplement }) => {
         fetch(`${API_REQUEST}inegi/localidades?paginate%5Bpage%5D=1&paginate%5BselectQuery%5D=null&paginate%5BbyColumn%5D=true&paginate%5Blimit%5D=4000&paginate%5BorderBy%5D=nom_loc&paginate%5Bascending%5D=1&paginate%5BsQ%5D%5B0%5D%5BopT%5D=con&paginate%5BsQ%5D%5B0%5D%5Bop%5D=and&paginate%5BsQ%5D%5B0%5D%5BsQ%5D%5B0%5D%5BopT%5D=com&paginate%5BsQ%5D%5B0%5D%5BsQ%5D%5B0%5D%5Bop%5D=%3D&paginate%5BsQ%5D%5B0%5D%5BsQ%5D%5B0%5D%5BsQ%5D%5Bcve_ent%5D=${cve_ent}&paginate%5BsQ%5D%5B1%5D%5BopT%5D=con&paginate%5BsQ%5D%5B1%5D%5Bop%5D=and&paginate%5BsQ%5D%5B1%5D%5BsQ%5D%5B0%5D%5BopT%5D=com&paginate%5BsQ%5D%5B1%5D%5BsQ%5D%5B0%5D%5Bop%5D=%3D&paginate%5BsQ%5D%5B1%5D%5BsQ%5D%5B0%5D%5BsQ%5D%5Bcve_mun%5D=${cve_mun}`, requestOptions)
             .then(response => response.json())
             .then(result => {
+
+                result.data.unshift({ localidad_id: "", municipio_id: "", cve_ent: "", cve_mun: "", cve_loc: "", nom_loc: "Seleccione", cve_periodo: "", ambito: "", created_at: null, updated_at: null })
                 setEntidad({
                     ...entidad,
                     localidades: result.data
@@ -100,13 +105,12 @@ const EntidadSelects = ({ textoComplemetarioLabel, nameComplement }) => {
         <React.Fragment>
             <div className='col-md-4'>
                 <label className="control-label"> Estado de {textoComplemetarioLabel} *:</label>
-                <select
-                    className="form-control"
+                <SelectEstados
+                    className='form-control'
                     name={`estado_${nameComplement}`}
                     onChange={getMunicipio}
-                >
-                    {entidad.estados.map((item) => <option key={item.value} value={item.value}>{item.name}</option>)}
-                </select>
+                    onBlur={onBlur}
+                />
             </div>
             {/* MUNICIPIO */}
             <div className='col-md-4'>
@@ -115,8 +119,9 @@ const EntidadSelects = ({ textoComplemetarioLabel, nameComplement }) => {
                     className="form-control"
                     name={`municipio_${nameComplement}`}
                     onChange={getLocalidades}
+                    onBlur={onBlur}
                 >
-                    {/* <option key='' value=''>Selecciona</option> */}
+                    {/* <option key='' value=''>--Seleccione--</option> */}
                     {entidad.municipios.map((item) => <option key={item.cve_mun} value={item.cve_mun}>{item.nom_mun}</option>)}
                 </select>
             </div>
@@ -126,9 +131,10 @@ const EntidadSelects = ({ textoComplemetarioLabel, nameComplement }) => {
                 <select
                     className="form-control"
                     name={`localidad_${nameComplement}`}
+                    onBlur={onBlur}
                 >
-                    {/* <option key='' value=''>Selecciona</option> */}
-                    {entidad.localidades.map(item => <option key={item.cve_loc} value={item.cve_loc}>{item.nom_loc}</option>)}
+                    {/* <option key='' value=''>--Seleccione--</option> */}
+                    {entidad.localidades.map(item => <option key={item.localidad_id} value={item.cve_loc}>{item.nom_loc}</option>)}
                 </select>
             </div>
         </React.Fragment>

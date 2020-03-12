@@ -2,7 +2,9 @@ import React from 'react'
 
 const InfoPersonaMoral = () => {
     return (
-        <h2>Persona Moral</h2>
+        <React.Fragment>
+            <h1>Persona Moral</h1>
+        </React.Fragment>
     );
 }
 

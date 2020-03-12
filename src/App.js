@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Bienvenida from './rutas/Bienvenida';
-import Login from './rutas/Login';
+import Bienvenida from './routhes/Bienvenida';
+import Login from './routhes/Login';
 import './styles.css'
 import 'bootstrap'
-import Footer from './componentes/Footer';
-import Generales from './rutas/Generales';
-import WizardSteps from './componentes/WizardSteps';
+import Footer from './singles/Footer';
+import Generales from './routhes/Generales';
+import WizardSteps from './singles/WizardSteps';
 import ApoyosState from "./context/apoyos/apoyosState";
-import Apoyos from './rutas/Apoyos';
-import Firma from './rutas/Firma';
+import Apoyos from './routhes/Apoyos';
+import Firma from './routhes/Firma';
 
 
 function App() {

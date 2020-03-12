@@ -1,5 +1,5 @@
 import React from 'react'
-import FirmaDigitalForm from "../componentes/FirmaDigitalForm";
+import FirmaDigitalForm from "../components/FirmaDigitalForm";
 
 const Firma = () => {
     return (

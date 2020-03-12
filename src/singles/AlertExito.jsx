@@ -7,7 +7,6 @@ const AlertExito = (msg, txt = null) => {
         text: txt,
         showConfirmButton: false
     })
-
 }
 
 export default AlertExito;

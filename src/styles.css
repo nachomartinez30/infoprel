@@ -1,3 +1,27 @@
 .noValido {
   border: 2px solid red;
 }
+
+.py5{
+      padding-top: 5pt;
+      padding-bottom: 5pt;
+}
+.px5{
+      padding-right: 5pt;
+      padding-left: 5pt;
+}
+.pr5{
+      padding-right: 5pt;
+}
+.pl5{      
+      padding-left: 5pt;
+}
+.pt5{
+      padding-top: 5pt;
+}
+.pt25{
+      padding-top: 25px;
+}
+.pb5{
+      padding-bottom: 5pt;
+}

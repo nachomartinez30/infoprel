@@ -1,18 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Redirect } from "react-router-dom";
 
-import InputRFC from './InputRFC'
-import AlertCargando from './AlertCargando'
-import AlertError from './AlertError'
-import AlertAdvertencia from './AlertAdvertencia'
+import InputRFC from '../singles/InputRFC'
+import AlertCargando from '../singles/AlertCargando'
+import AlertError from '../singles/AlertError'
+import AlertAdvertencia from '../singles/AlertAdvertencia'
 import apoyosContext from "./../context/apoyos/apoyosContext";
-import AlertExito from './AlertExito';
+import AlertExito from '../singles/AlertExito';
+
+/* Helpers */
+import ToMayus from '../helpers/ToMayus'
 
 const FormaDigitalForm = (props) => {
 
 
     const apoyoContext = useContext(apoyosContext);
-    const {  pass, agregarCertYKey } = apoyoContext.checkCertState;
+    const { pass, agregarCertYKey } = apoyoContext.checkCertState;
 
 
     /* state principal para envio de datos a State global */
@@ -24,15 +27,14 @@ const FormaDigitalForm = (props) => {
         cerValido: null
     })
 
-    const [rfcToCheck, setRfcToCheck] = useState('')
+    const [rfcToCheck, setRfcToCheck] = useState({})
 
     useEffect(() => {
         agregarCertYKey(valores);
-    }, [valores.cerValido])
+    }, [valores.cerValido, rfcToCheck])
 
     const getDatos = e => {
         e.preventDefault();
-
         if (e.target.name === 'llave' || e.target.name === 'certificado') {
             setValores({
                 ...valores,
@@ -104,30 +106,34 @@ const FormaDigitalForm = (props) => {
 
     /* metodos para la validacion de RFC y mayus */
 
-    const rfcToMayus = (value) => {
-        const rfc_lower = value.target.value;
-        const rfcUpper = rfc_lower.toUpperCase()
-        setValores({
-            ...valores,
-            rfc: rfcUpper
-        })
-        setRfcToCheck(rfcUpper);
+    const setInfo = (input) => {
+        setRfcToCheck({
+            ...rfcToCheck,
+            [input.target.name]: input.target.value
+        });
     }
+
+
+    const { rfc } = valores
 
 
     return (
         <section>
             <div>
                 <div className="row">
-                    <InputRFC
-                        defaultValue={rfcToCheck}
-                        name={'rfc'}
-                        rfc={rfcToCheck}
-                        onTyping={rfcToMayus}
-                    />
-                </div>
-                <div className="row">
                     <div className="col-md-6 col-md-offset-3 ">
+                        <label><b>RFC del beneficiario:</b></label>
+                        <InputRFC
+                            className='form-control'
+                            defaultValue={rfc}
+                            name='rfc'
+                            rfc={rfc}
+                            onChange={getDatos}
+                            onKeyPressCapture={ToMayus}
+                            placeholder='Ingrese RFC de beneficiario'
+                        />
+                    </div>
+                    <div className="col-md-6 col-md-offset-3 py5">
                         <label><b>Certificado (.cer):</b></label>
                         <input
                             onBlur={getDatos}
@@ -135,14 +141,13 @@ const FormaDigitalForm = (props) => {
                             type="file"
                             name="certificado"
                             className="form-control"
-                            accept="cer/cer"
+                            accept=".cer"
                         />
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6 col-md-offset-3">
+                    <div className="col-md-6 col-md-offset-3 py5">
                         <label><b>Clave privada (.key):</b></label>
                         <input
+                            accept=".key"
                             onBlur={getDatos}
                             id="llave"
                             type="file"
@@ -150,10 +155,8 @@ const FormaDigitalForm = (props) => {
                             className="form-control"
                         />
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6 col-md-offset-3">
-                        <label><b>Contraseña de clave privada:</b></label>
+                    <div className="col-md-6 col-md-offset-3 py5">
+                        <label ><b>Contraseña de clave privada:</b></label>
                         <input
                             onBlur={getDatos}
                             defaultValue={pass}
@@ -161,22 +164,23 @@ const FormaDigitalForm = (props) => {
                             type="password"
                             name="pass"
                             className="form-control"
-                            placeholder="Contraseña" />
-                    </div>
-                    <div className="col-md-4 col-md-offset-4 pull-right">
-                        <br />
-                        <button
-                            onClick={checkCERTKey}
-                            id="btn_iniciar"
-                            type="button"
-                            className="btn btn-success">
-                            {props.textButton}
+                            placeholder="Contraseña"
+                        />
+                        <div className="col-md-4 col-md-offset-4 pull-right">
+                            <br />
+                            <button
+                                onClick={checkCERTKey}
+                                id="btn_iniciar"
+                                type="button"
+                                className="btn btn-success">
+                                {props.textButton}
                             </button>
+                        </div>
                     </div>
                 </div>
             </div>
             {/* si el certificado  */}
-            {valores.cerValido && <Redirect to='/generales'/>}
+            {valores.cerValido && <Redirect to='/generales' />}
         </section>
     );
 }

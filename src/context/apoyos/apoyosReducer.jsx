@@ -1,4 +1,4 @@
-import { REVISAR_FIRMA_DIGITAL, AGREGAR_CERTIFICADO_KEY } from '../../types'
+import { AGREGAR_REGISTRO, AGREGAR_CERTIFICADO_KEY } from '../../types'
 
 
 export default (estado, accion) => {
@@ -8,6 +8,11 @@ export default (estado, accion) => {
             return {
                 ...estado,
                 checkCertState: accion.payload
+            }
+        case AGREGAR_REGISTRO:
+            return {
+                ...estado,
+                registro: accion.payload
             }
         default:
             return estado;
