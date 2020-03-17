@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import AlertError from './AlertError';
 
-const SelectDocAcreditacion = (props) => {
+const SelectNacionalidad = (props) => {
 
-    const [data, setData] = useState([])
+    const [nacionalidad, setNacionalidad] = useState([])
 
     useEffect(() => {
         getData();
@@ -17,10 +17,10 @@ const SelectDocAcreditacion = (props) => {
             redirect: 'follow'
         };
 
-        fetch(`${API_REQUEST}catalogos/documentos_acreditacion`, requestOptions)
+        fetch(`${API_REQUEST}catalogos/nacionalidades`, requestOptions)
             .then(response => response.json())
             .then(result => {
-                setData(result.data)
+                setNacionalidad(result.nacionalidades)
             })
             .catch(error => {
                 AlertError(`Error al cargar ${name} `, error)
@@ -38,9 +38,9 @@ const SelectDocAcreditacion = (props) => {
             onChange={onChange}
         >
             <option value=''>--Seleccione--</option>
-            {data.map(item => <option key={item.id} value={item.id}>{item.nombre}</option>)}
+            {nacionalidad.map(item => <option key={item.id} value={item.clave}>{item.nombre}</option>)}
         </select>
     );
 }
 
-export default SelectDocAcreditacion;
+export default SelectNacionalidad;

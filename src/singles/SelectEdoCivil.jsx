@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { getDefaultLang } from 'validatorjs'
+import React, { useEffect, useState } from 'react'
 import AlertError from './AlertError'
 
-const SelectEstados = (props) => {
-    const [estados, setEstados] = useState([])
+const SelectEdoCivil = (props) => {
+    const [edoCivil, setEdoCivil] = useState([])
 
     const getData = () => {
         const API_REQUEST = process.env.REACT_APP_BACKEN_URL
@@ -13,15 +12,16 @@ const SelectEstados = (props) => {
             redirect: 'follow'
         };
 
-        fetch(`${API_REQUEST}inegi/estados`, requestOptions)
+        fetch(`${API_REQUEST}catalogos/estados_civiles`, requestOptions)
             .then(response => response.json())
             .then(result => {
-                setEstados(result)
+                setEdoCivil(result.estados_civiles)
             })
             .catch(error => {
                 AlertError(`Error al cargar ${name} `, error)
                 console.log('error', error)
-            });
+            }
+                );
     }
 
     useEffect(() => {
@@ -37,9 +37,9 @@ const SelectEstados = (props) => {
             onBlur={onBlur}
         >
             <option value=''>--Seleccione--</option>
-            {estados.map((item) => <option key={item.cve_ent} value={item.cve_ent}>{item.nom_ent}</option>)}
+            {edoCivil.map((item) => <option key={item.clave} value={item.clave}>{item.nombre}</option>)}
         </select>
     );
 }
 
-export default SelectEstados;
+export default SelectEdoCivil;

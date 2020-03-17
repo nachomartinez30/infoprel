@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AlertError from './AlertError';
 
-const SelectDocAcreditacion = (props) => {
-
+const SelectTipoPersona = (props) => {
     const [data, setData] = useState([])
 
     useEffect(() => {
@@ -17,10 +16,10 @@ const SelectDocAcreditacion = (props) => {
             redirect: 'follow'
         };
 
-        fetch(`${API_REQUEST}catalogos/documentos_acreditacion`, requestOptions)
+        fetch(`${API_REQUEST}catalogos/tipos_solicitantes/personalidades_juridicas/1`, requestOptions)
             .then(response => response.json())
             .then(result => {
-                setData(result.data)
+                setData(result)
             })
             .catch(error => {
                 AlertError(`Error al cargar ${name} `, error)
@@ -43,4 +42,4 @@ const SelectDocAcreditacion = (props) => {
     );
 }
 
-export default SelectDocAcreditacion;
+export default SelectTipoPersona;

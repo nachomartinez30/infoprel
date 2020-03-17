@@ -7,6 +7,10 @@ import ToMayus from '../helpers/ToMayus'
 import SelectSexo from '../singles/SelectSexo';
 import SelectDocAcreditacion from '../singles/SelectDocAcreditacion';
 import SelectEstados from '../singles/SelectEstados';
+import SelectEdoCivil from '../singles/SelectEdoCivil';
+import SelectNacionalidad from '../singles/SelectNacionalidad';
+import SelectTipoPersona from '../singles/SelectTipoPersona';
+import SelectEtnias from '../singles/SelectEtnias';
 
 
 const InfoPersonaFisica = () => {
@@ -147,6 +151,7 @@ const InfoPersonaFisica = () => {
                         className='form-control'
                         name='sexo_fisica'
                         key='sexo_fisica'
+                        onChange={setInfo}
                     />
                 </div>
             </div>
@@ -161,7 +166,6 @@ const InfoPersonaFisica = () => {
                             rfc={rfc_fisica}
                             onKeyPressCapture={ToMayus}
                             onChange={setInfo}
-                            onBlur
                             name='rfc_fisica'
                             key='rfc_fisica'
                         />
@@ -175,6 +179,7 @@ const InfoPersonaFisica = () => {
                         className='form-control'
                         name='doc_acredita_fisica'
                         key='doc_acredita_fisica'
+                        onChange={setInfo}
                     />
                 </div>
             </div>
@@ -185,6 +190,7 @@ const InfoPersonaFisica = () => {
                         className="form-control"
                         name="estado_nac_fis"
                         key='estado_nac_fis'
+                        onChange={setInfo}
                     />
                     {/* <select className="form-control" name="estado_nac_fis">
                     </select> */}
@@ -192,53 +198,84 @@ const InfoPersonaFisica = () => {
                 </div>
                 <div className="col-md-4">
                     <label className="control-label" htmlFor="FnacimientoF">Fecha de nacimiento<span className="form-text">*</span>:</label>
-                    <input name="FnacimientoF" className="form-control" type="date" placeholder="DD/MM/AAAA" defaultValue />
+                    <input
+                        name="FnacimientoF"
+                        className="form-control"
+                        type="date"
+                        placeholder="DD/MM/AAAA"
+                        onChange={setInfo}
+                    />
                     <small htmlFor="FnacimientoF" className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
                 </div>
                 <div className="col-md-4">
                     <label className="control-label">Estado Civil<span className="form-text">*</span>:</label>
-                    <select name="edo_civil_fisica" className="form-control">
-
-                    </select>
+                    <SelectEdoCivil
+                        name="edo_civil_fisica"
+                        key="edo_civil_fisica"
+                        className="form-control"
+                        onChange={setInfo}
+                    />
                 </div>
             </div>
             <div className="row py5">
                 <div className="col-md-4">
                     <label className="control-label" htmlFor="nacionalidad_fisica">Nacionalidad
         <span className="form-text">*</span>:</label>
-                    <select className="form-control" name="nacionalidad_fisica">
-                        {/*?=$tipo_nacionalidad;?*/}
-                    </select>
+                    <SelectNacionalidad
+                        onChange={setInfo}
+                        className="form-control"
+                        name="nacionalidad_fisica"
+                        key="nacionalidad_fisica"
+                    />
                     <small htmlFor="nacionalidad_fisica" className="form-text form-text-error" style={{ display: 'none' }} />
                 </div>
                 <div className="col-md-3">
                     <label htmlFor="phone">Teléfono fijo:</label>
-                    <input name="telefono_fisica" type="text" maxLength={10} className="form-control" placeholder="Teléfono fijo"
-                        onKeyPress="return ValidarNumeros(event)" defaultValue />
+                    <input
+                        onChange={setInfo}
+                        name="telefono_fisica"
+                        type="text"
+                        maxLength={10}
+                        className="form-control"
+                        placeholder="Teléfono fijo"
+                    // onKeyPress="return ValidarNumeros(event)" defaultValue 
+                    />
                     {/* solo numeros */}
                     <small className="form-text form-text-error" style={{ display: 'none' }} />
                 </div>
                 <div className="col-md-3">
                     <label htmlFor="phone">Teléfono móvil:</label>
-                    <input name="movil_fisica" type="text" maxLength={10} minLength={10} className="form-control" placeholder="Teléfono móvil"
-                        onKeyPress="return ValidarNumeros(event)" defaultValue />
+                    <input
+                        name="movil_fisica"
+                        type="text"
+                        maxLength={10}
+                        minLength={10}
+                        className="form-control"
+                        placeholder="Teléfono móvil"
+                        // onKeyPress="return ValidarNumeros(event)"
+                        onChange={setInfo}
+                    />
                 </div>
             </div>
             <div className="row py5">
                 <div className="col-md-6">
-                    <label className="control-label">Como persona física eres<span className="form-text">*</span>:</label>
-                    <select name="tipo_persona" className="form-control">
-                        {/*?=$tipo_solicitante_f;?*/}
-                    </select>
+                    <label className="control-label">Como beneficiario eres<span className="form-text">*</span>:</label>
+                    <SelectTipoPersona
+                        key='tipo_persona'
+                        name="tipo_persona"
+                        className="form-control"
+                    />
                 </div>
                 <div className="col-md-6">
                     <label className="control-label" htmlFor="etniaF">Grupo indígena de pertenencia:</label>
-                    <select className="form-control" name="etniaF">
-                        {/*?=$tipo_etnias;?*/}
-                    </select>
+                    <SelectEtnias
+                        className="form-control"
+                        name="etniaF"
+                        key="etniaF"
+                    />
                 </div>
             </div>
-        </React.Fragment >
+        </React.Fragment>
     );
 }
 

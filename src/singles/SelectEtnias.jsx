@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AlertError from './AlertError';
 
-const SelectDocAcreditacion = (props) => {
-
+const SelectEtnias = props => {
     const [data, setData] = useState([])
 
     useEffect(() => {
@@ -17,7 +16,7 @@ const SelectDocAcreditacion = (props) => {
             redirect: 'follow'
         };
 
-        fetch(`${API_REQUEST}catalogos/documentos_acreditacion`, requestOptions)
+        fetch(`${API_REQUEST}catalogos/tipos_etnias`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 setData(result.data)
@@ -43,4 +42,4 @@ const SelectDocAcreditacion = (props) => {
     );
 }
 
-export default SelectDocAcreditacion;
+export default SelectEtnias;

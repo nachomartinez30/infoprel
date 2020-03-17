@@ -5,7 +5,7 @@ Sistema de informacion preliminar para CONAFOR
 #estructura
 
 routhes 
-debe contener SOLAMENTE componentes
+debe contener SOLAMENTE componentes o  singles
 
 components 
 puede contener htmls funcioines propias y singles
