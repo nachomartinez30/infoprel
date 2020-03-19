@@ -3,44 +3,9 @@ import AlertError from '../singles/AlertError'
 import SelectEstados from '../singles/SelectEstados'
 
 const EntidadSelects = (props) => {
-    const { textoComplemetarioLabel, nameComplement, onBlur } = props
+    const { textoComplemetarioLabel, nameComplement, onBlur, estados } = props
 
     const [entidad, setEntidad] = useState({
-        estados: [
-            { value: '00', name: '--Seleccione--' },
-            { value: '01', name: 'AGUASCALIENTES' },
-            { value: '02', name: 'BAJA CALIFORNIA' },
-            { value: '03', name: 'BAJA CALIFORNIA SUR' },
-            { value: '04', name: 'CAMPECHE' },
-            { value: '07', name: 'CHIAPAS' },
-            { value: '08', name: 'CHIHUAHUA' },
-            { value: '09', name: 'CIUDAD DE MÉXICO' },
-            { value: '05', name: 'COAHUILA DE ZARAGOZA' },
-            { value: '06', name: 'COLIMA' },
-            { value: '10', name: 'DURANGO' },
-            { value: '11', name: 'GUANAJUATO' },
-            { value: '12', name: 'GUERRERO' },
-            { value: '13', name: 'HIDALGO' },
-            { value: '14', name: 'JALISCO' },
-            { value: '15', name: 'MÉXICO' },
-            { value: '16', name: 'MICHOACÁN DE OCAMPO' },
-            { value: '17', name: 'MORELOS' },
-            { value: '18', name: 'NAYARIT' },
-            { value: '19', name: 'NUEVO LEÓN' },
-            { value: '20', name: 'OAXACA' },
-            { value: '21', name: 'PUEBLA' },
-            { value: '22', name: 'QUERÉTARO' },
-            { value: '23', name: 'QUINTANA ROO' },
-            { value: '24', name: 'SAN LUIS POTOSÍ' },
-            { value: '25', name: 'SINALOA' },
-            { value: '26', name: 'SONORA' },
-            { value: '27', name: 'TABASCO' },
-            { value: '28', name: 'TAMAULIPAS' },
-            { value: '29', name: 'TLAXCALA' },
-            { value: '30', name: 'VERACRUZ DE IGNACIO DE LA LLAVE' },
-            { value: '31', name: 'YUCATÁN' },
-            { value: '32', name: 'ZACATECAS' }
-        ],
         municipios: [],
         localidades: [],
         cve_ent_selected: '',
@@ -106,6 +71,7 @@ const EntidadSelects = (props) => {
             <div className='col-md-4'>
                 <label className="control-label"> Estado de {textoComplemetarioLabel} *:</label>
                 <SelectEstados
+                    data={estados}
                     className='form-control'
                     name={`estado_${nameComplement}`}
                     onChange={getMunicipio}

@@ -1,15 +1,13 @@
 import React, { useReducer } from 'react'
 // se importan los types
-import {
-    AGREGAR_CERTIFICADO_KEY,
-    AGREGAR_REGISTRO
-} from '../../types'
+import { AGREGAR_CERTIFICADO_KEY, AGREGAR_REGISTRO } from '../../types'
 /* se importan el context y se le pasa el reducer */
 import apoyosContext from "./apoyosContext";
 import apoyosReducer from './apoyosReducer'
 
 const ApoyosState = (props) => {
 
+    // TODO: borrar variable rfc
     const stateInicial = {
         checkCertState: {
             certificado: '',
@@ -52,18 +50,22 @@ const ApoyosState = (props) => {
     }
 
 
+
     return (
         <apoyosContext.Provider
             // dota al provider de el state y los metodos para agregar a este los campos necesarios
-            value={{
-                checkCertState: {
-                    ...state.checkCertState,
-                    agregarCertYKey
-                },
-                registros: {
-                    ...state.registro
+            value={
+                {
+                    checkCertState: {
+                        ...state.checkCertState,
+                        agregarCertYKey
+                    },
+                    registros: {
+                        ...state.registro,
+                        agregarRegistro
+                    }
                 }
-            }}
+            }
         >
             {props.children}
         </apoyosContext.Provider>

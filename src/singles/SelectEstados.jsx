@@ -1,34 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { getDefaultLang } from 'validatorjs'
-import AlertError from './AlertError'
+import React  from 'react'
 
 const SelectEstados = (props) => {
-    const [estados, setEstados] = useState([])
 
-    const getData = () => {
-        const API_REQUEST = process.env.REACT_APP_BACKEN_URL
+    const { name, className, onChange, onBlur, data } = props
 
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch(`${API_REQUEST}inegi/estados`, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                setEstados(result)
-            })
-            .catch(error => {
-                AlertError(`Error al cargar ${name} `, error)
-                console.log('error', error)
-            });
-    }
-
-    useEffect(() => {
-        getData()
-    }, [''])
-
-    const { name, className, onChange, onBlur } = props
     return (
         <select
             className={className}
@@ -37,7 +12,8 @@ const SelectEstados = (props) => {
             onBlur={onBlur}
         >
             <option value=''>--Seleccione--</option>
-            {estados.map((item) => <option key={item.cve_ent} value={item.cve_ent}>{item.nom_ent}</option>)}
+
+            {typeof data != 'undefined' && data.map((item) => <option key={item.cve_ent} value={item.cve_ent}>{item.nom_ent}</option>)}
         </select>
     );
 }

@@ -1,18 +1,20 @@
 import React, { useContext } from 'react'
 import moment from "moment";
-/* COMPONENTES PROPIOS */
 /* import del context para status general */
 import apoyosContext from '../context/apoyos/apoyosContext'
+/* COMPONENTES PROPIOS */
 import EntidadSelects from './EntidadSelects';
 import SelectSINo from '../singles/SelectSI_No';
+/* CONTEXT */
+import catalogosContext from "./../context/catalogos/catalogosContext";
 
 const DatosGenerales = ({ setInfoGeneral, infoGeneral }) => {
+    /* Context catalogos */
+    const catsContext = useContext(catalogosContext)
+    const { estados } = catsContext.catalogos
     // const apoyoContext = useContext(apoyosContext);
 
     const AnioAnterior = moment().format('YYYY') - 1;
-
-
-
 
     const setInfo = (input) => {
         // console.log(infoGeneral);
@@ -26,6 +28,7 @@ const DatosGenerales = ({ setInfoGeneral, infoGeneral }) => {
         <React.Fragment>
             <div className='row'>
                 <EntidadSelects
+                    estados={estados}
                     textoComplemetarioLabel={'la Solicitud'}
                     nameComplement={'solicitud'}
                     onBlur={setInfo}
@@ -44,7 +47,6 @@ const DatosGenerales = ({ setInfoGeneral, infoGeneral }) => {
                     {/* <small className="form-text form-text-error" htmlFor="seleccion_persona" style={{ display: 'none' }}>Dato necesario</small> */}
                 </div>
                 {/* TIPO DE PERSONA */}
-
                 {/* TIPO DE SOLICITUD */}
                 <div className="col-md-6 py5">
                     <label className="control-label"> Tipo de Solicitud *:</label>
@@ -60,7 +62,6 @@ const DatosGenerales = ({ setInfoGeneral, infoGeneral }) => {
                     {/* <small className="form-text form-text-error" htmlFor="tipo-sol" style={{ display: 'none' }}>Dato necesario</small> */}
                 </div>
                 {/* TIPO DE SOLICITUD */}
-
                 <div className='col-md-6 py5'>
                     <SelectSINo
                         onChange={setInfo}

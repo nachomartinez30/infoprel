@@ -1,35 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import AlertError from './AlertError';
+import React from 'react'
+
 
 const SelectDocAcreditacion = (props) => {
 
-    const [data, setData] = useState([])
 
-    useEffect(() => {
-        getData();
-    }, [''])
-
-    const getData = () => {
-        const API_REQUEST = process.env.REACT_APP_BACKEN_URL;
-
-        let requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch(`${API_REQUEST}catalogos/documentos_acreditacion`, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                setData(result.data)
-            })
-            .catch(error => {
-                AlertError(`Error al cargar ${name} `, error)
-                console.log('error', error)
-            });
-    }
 
     /* componente que extrae */
-    const { name, className, onChange } = props
+    const { name, className, onChange, data } = props
 
     return (
         <select
@@ -38,7 +15,7 @@ const SelectDocAcreditacion = (props) => {
             onChange={onChange}
         >
             <option value=''>--Seleccione--</option>
-            {data.map(item => <option key={item.id} value={item.id}>{item.nombre}</option>)}
+            {typeof data != 'undefined' && data.map(item => <option key={item.id} value={item.id}>{item.nombre}</option>)}
         </select>
     );
 }

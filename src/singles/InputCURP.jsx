@@ -1,28 +1,23 @@
 import React, { useState } from 'react'
-import rfcValido from '../helpers/rfcValido'
+import curpValida from '../helpers/curpValida';
 
-const InputRFC = (props) => {
+const InputCURP = (props) => {
 
     const {
-        rfc,
+        curp,
         onKeyPressCapture,
         name,
         defaultValue,
         placeholder,
         className,
-        onChange,
-        key
+        onChange
     } = props
-
-    const [valido, setValido] = useState('')
-    const [claseValido, setClaseValido] = useState('')
-
 
 
     const checkStructure = () => {
-        if (typeof rfc != 'undefined') {
-            if (rfc.length > 1) {
-                const check = (rfcValido(rfc) === rfc) ? true : false;
+        if (typeof curp != 'undefined') {
+            if (curp.length > 1) {
+                const check = (curpValida(curp)) ? true : false;
                 setClaseValido((check) ? '' : 'noValido')
                 setValido(check);
             } else {
@@ -31,6 +26,9 @@ const InputRFC = (props) => {
             }
         }
     }
+
+    const [valido, setValido] = useState('')
+    const [claseValido, setClaseValido] = useState('')
 
 
     return (
@@ -43,11 +41,14 @@ const InputRFC = (props) => {
                 onChange={onChange}
                 onBlur={checkStructure}
                 name={name}
+                maxLength={18}
+                minLength={18}
+                type='text'
             />
             {valido === false &&
                 <div className="col-sm-4">
                     <small className="text-danger">
-                        El RFC no es valido.
+                        El CURP no es valido.
                 </small>
                 </div>
             }
@@ -55,4 +56,4 @@ const InputRFC = (props) => {
     );
 }
 
-export default InputRFC;
+export default InputCURP;

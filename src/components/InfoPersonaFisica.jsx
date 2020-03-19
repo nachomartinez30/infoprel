@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import InputRFC from '../singles/InputRFC'
-import LineaDivision from "../singles/LineaDivision";
-
-/* Helpers */
+import React, { useState, useEffect, useContext } from 'react'
+import moment from 'moment'
+/* HELPERS */
 import ToMayus from '../helpers/ToMayus'
+import curpValida from '../helpers/curpValida'
+/* componentes propios */
+import LineaDivision from "../singles/LineaDivision";
+import InputRFC from '../singles/InputRFC'
 import SelectSexo from '../singles/SelectSexo';
 import SelectDocAcreditacion from '../singles/SelectDocAcreditacion';
 import SelectEstados from '../singles/SelectEstados';
@@ -11,33 +13,30 @@ import SelectEdoCivil from '../singles/SelectEdoCivil';
 import SelectNacionalidad from '../singles/SelectNacionalidad';
 import SelectTipoPersona from '../singles/SelectTipoPersona';
 import SelectEtnias from '../singles/SelectEtnias';
+import redirectToCURP from '../helpers/redirectToCURP';
+/* CONTEXT */
+import catalogosContext from "./../context/catalogos/catalogosContext";
+import InputCURP from '../singles/InputCURP';
+import exctractInfoCurp from '../helpers/exctractInfoCurp';
 
 
 const InfoPersonaFisica = () => {
+
+    const catsContext = useContext(catalogosContext)
+    const {
+        nacionalidades,
+        tipos_etnias,
+        estados_civiles,
+        documentos_acreditacion,
+        personalidades_juridicas_F,
+        estados
+    } = catsContext.catalogos
 
     const [infoP_FLocal, setInfoP_FLocal] = useState({})
 
     useEffect(() => {
         // cuando el state cambia
     }, [infoP_FLocal])
-
-    const redirectToCURP = () => {
-        window.open('https://consultas.curp.gob.mx/CurpSP/gobmx/inicio.jsp', '_blank')
-    }
-
-    // const validarLetrasyNumeros = e => {
-    //     // e.preventDefault();
-    //     const value = e.target.value.toUpperCase()
-    //     const upperValue = value.toUpperCase()
-    //     setInfoP_FLocal({
-    //         ...infoP_FLocal,
-    //         curp_fisica: upperValue
-    //     })
-    //     console.log(infoP_FLocal);
-
-    // }
-
-
 
 
     const setInfo = (input) => {
@@ -46,6 +45,7 @@ const InfoPersonaFisica = () => {
             [input.target.name]: input.target.value
         })
     }
+
 
     const {
         nombre_fisica,
@@ -64,6 +64,22 @@ const InfoPersonaFisica = () => {
         tipo_persona,
         etniaF,
     } = infoP_FLocal
+
+    const fillDatosByCURP = () => {
+        /* rellena los datos de genero y echa de nacimiento de persona fisica */
+        if (typeof curp_fisica !== 'undefined') {
+            if (curp_fisica.length >= 18) {
+                /* EXCTRAE DEL HELPER LA INFORMACION PARA RELLENAR */
+                const infoCurp = exctractInfoCurp(curp_fisica)
+                setInfoP_FLocal({
+                    ...infoP_FLocal,
+                    FnacimientoF: moment(`${infoCurp.anio}-${infoCurp.mes}-${infoCurp.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
+                    sexo_fisica: (infoCurp.sexo === 'H') ? 1 : 2,
+                    nacionalidad_fisica: infoCurp.nacionalidad
+                })
+            }
+        }
+    }
 
     return (
         <React.Fragment>
@@ -121,9 +137,22 @@ const InfoPersonaFisica = () => {
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-6 col-lg-6 py5">
+                <div className="col-md-6 col-lg-6 py5"
+                    onBlur={fillDatosByCURP}
+                >
                     <label className="control-label" htmlFor="curp_fisica">Clave Única de Registro de Población (CURP) *:</label>
-                    <input
+                    <InputCURP
+                        name="curp_fisica"
+                        id="curp_fisica"
+                        className="form-control"
+                        defaultValue={curp_fisica}
+                        placeholder="Ingresa tu CURP"
+                        onChange={setInfo}
+                        curp={curp_fisica}
+                        onKeyDownCapture={ToMayus}
+                        onBlur={curpValida}
+                    />
+                    {/* <input
                         name="curp_fisica"
                         id="curp_fisica"
                         className="form-control"
@@ -134,8 +163,10 @@ const InfoPersonaFisica = () => {
                         placeholder="Ingresa tu CURP"
                         onChange={setInfo}
                         onKeyDownCapture={ToMayus}
-                    // onBlur="validacionCURP(this.value,this.name)"
-                    />
+                        onBlur={curpValida}
+                    /> */}
+
+
                     <small className="form-text form-text-error" id="msg_error_curp" htmlFor="curp_fisica" style={{ display: 'none' }}>CURP necesaria</small>
                 </div>
                 <div className="col-md-3 pt25">
@@ -149,6 +180,7 @@ const InfoPersonaFisica = () => {
                     <label className="control-label" htmlFor="sexo_fisica">Sexo <span className="form-text">*</span>:</label>
                     <SelectSexo
                         className='form-control'
+                        defaultValue={sexo_fisica}
                         name='sexo_fisica'
                         key='sexo_fisica'
                         onChange={setInfo}
@@ -161,7 +193,6 @@ const InfoPersonaFisica = () => {
                         <label className="control-label" htmlFor="rfc_fisica">Registro Federal de Contribuyentes (RFC) *:</label>
                         <InputRFC
                             className='form-control'
-                            labelText='Registro Federal de Contribuyentes (RFC) *:'
                             placeholder='RFC Persona física'
                             rfc={rfc_fisica}
                             onKeyPressCapture={ToMayus}
@@ -176,6 +207,7 @@ const InfoPersonaFisica = () => {
                 <div className="col-md-6">
                     <label className="control-label">Documento con el que te acreditas<span className="form-text">*</span>:</label>
                     <SelectDocAcreditacion
+                        data={documentos_acreditacion}
                         className='form-control'
                         name='doc_acredita_fisica'
                         key='doc_acredita_fisica'
@@ -187,14 +219,14 @@ const InfoPersonaFisica = () => {
                 <div className="col-md-4">
                     <label className="control-label">Estado de Nacimiento<span className="form-text">*</span>:</label>
                     <SelectEstados
+                        data={estados}
                         className="form-control"
                         name="estado_nac_fis"
                         key='estado_nac_fis'
                         onChange={setInfo}
                     />
-                    {/* <select className="form-control" name="estado_nac_fis">
-                    </select> */}
-                    <small htmlFor className="form-text form-text-error" style={{ display: 'none' }} />
+
+                    <small className="form-text form-text-error" style={{ display: 'none' }} />
                 </div>
                 <div className="col-md-4">
                     <label className="control-label" htmlFor="FnacimientoF">Fecha de nacimiento<span className="form-text">*</span>:</label>
@@ -204,12 +236,14 @@ const InfoPersonaFisica = () => {
                         type="date"
                         placeholder="DD/MM/AAAA"
                         onChange={setInfo}
+                        defaultValue={FnacimientoF}
                     />
                     <small htmlFor="FnacimientoF" className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
                 </div>
                 <div className="col-md-4">
                     <label className="control-label">Estado Civil<span className="form-text">*</span>:</label>
                     <SelectEdoCivil
+                        data={estados_civiles}
                         name="edo_civil_fisica"
                         key="edo_civil_fisica"
                         className="form-control"
@@ -222,6 +256,8 @@ const InfoPersonaFisica = () => {
                     <label className="control-label" htmlFor="nacionalidad_fisica">Nacionalidad
         <span className="form-text">*</span>:</label>
                     <SelectNacionalidad
+                        defaultValue={nacionalidad_fisica}
+                        data={nacionalidades}
                         onChange={setInfo}
                         className="form-control"
                         name="nacionalidad_fisica"
@@ -238,7 +274,6 @@ const InfoPersonaFisica = () => {
                         maxLength={10}
                         className="form-control"
                         placeholder="Teléfono fijo"
-                    // onKeyPress="return ValidarNumeros(event)" defaultValue 
                     />
                     {/* solo numeros */}
                     <small className="form-text form-text-error" style={{ display: 'none' }} />
@@ -252,7 +287,6 @@ const InfoPersonaFisica = () => {
                         minLength={10}
                         className="form-control"
                         placeholder="Teléfono móvil"
-                        // onKeyPress="return ValidarNumeros(event)"
                         onChange={setInfo}
                     />
                 </div>
@@ -261,17 +295,21 @@ const InfoPersonaFisica = () => {
                 <div className="col-md-6">
                     <label className="control-label">Como beneficiario eres<span className="form-text">*</span>:</label>
                     <SelectTipoPersona
+                        data={personalidades_juridicas_F}
                         key='tipo_persona'
                         name="tipo_persona"
                         className="form-control"
+                        onChange={setInfo}
                     />
                 </div>
                 <div className="col-md-6">
                     <label className="control-label" htmlFor="etniaF">Grupo indígena de pertenencia:</label>
                     <SelectEtnias
+                        data={tipos_etnias}
                         className="form-control"
                         name="etniaF"
                         key="etniaF"
+                        onChange={setInfo}
                     />
                 </div>
             </div>

@@ -10,23 +10,26 @@ import WizardSteps from './singles/WizardSteps';
 import ApoyosState from "./context/apoyos/apoyosState";
 import Apoyos from './routhes/Apoyos';
 import Firma from './routhes/Firma';
+import CatalogosState from './context/catalogos/catalogosState';
 
 
 function App() {
   return (
     <ApoyosState>{/* STATE general para toda la solicitud de apoyos */}
-      <div className='container'>
-        <WizardSteps />
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Bienvenida} />
-            <Route exact path="/generales" component={Generales} />
-            <Route exact path="/apoyos" component={Apoyos} />
-            <Route exact path="/firmar" component={Firma} />
-          </Switch>
-          <Footer />
-        </Router>
-      </div>
+      <CatalogosState>
+        <div className='container'>
+          <WizardSteps />
+          <Router>
+            <Switch>
+              <Route exact path="/" component={Bienvenida} />
+              <Route exact path="/generales" component={Generales} />
+              <Route exact path="/apoyos" component={Apoyos} />
+              <Route exact path="/firmar" component={Firma} />
+            </Switch>
+            <Footer />
+          </Router>
+        </div>
+      </CatalogosState>
     </ApoyosState>
   );
 }

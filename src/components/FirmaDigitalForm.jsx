@@ -5,9 +5,9 @@ import InputRFC from '../singles/InputRFC'
 import AlertCargando from '../singles/AlertCargando'
 import AlertError from '../singles/AlertError'
 import AlertAdvertencia from '../singles/AlertAdvertencia'
-import apoyosContext from "./../context/apoyos/apoyosContext";
 import AlertExito from '../singles/AlertExito';
-
+/* CONTEXT */
+import apoyosContext from "./../context/apoyos/apoyosContext";
 /* Helpers */
 import ToMayus from '../helpers/ToMayus'
 
@@ -105,15 +105,6 @@ const FormaDigitalForm = (props) => {
 
 
     /* metodos para la validacion de RFC y mayus */
-
-    const setInfo = (input) => {
-        setRfcToCheck({
-            ...rfcToCheck,
-            [input.target.name]: input.target.value
-        });
-    }
-
-
     const { rfc } = valores
 
 
