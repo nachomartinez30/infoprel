@@ -3,8 +3,6 @@ import React from 'react'
 
 const SelectDocAcreditacion = (props) => {
 
-
-
     /* componente que extrae */
     const { name, className, onChange, data } = props
 

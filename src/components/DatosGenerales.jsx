@@ -4,7 +4,7 @@ import moment from "moment";
 import apoyosContext from '../context/apoyos/apoyosContext'
 /* COMPONENTES PROPIOS */
 import EntidadSelects from './EntidadSelects';
-import SelectSINo from '../singles/SelectSI_No';
+import SelectSiNo from '../singles/SelectSiNo';
 /* CONTEXT */
 import catalogosContext from "./../context/catalogos/catalogosContext";
 
@@ -28,9 +28,8 @@ const DatosGenerales = ({ setInfoGeneral, infoGeneral }) => {
         <React.Fragment>
             <div className='row'>
                 <EntidadSelects
-                    estados={estados}
-                    textoComplemetarioLabel={'la Solicitud'}
-                    nameComplement={'solicitud'}
+                    textoComplemetarioLabel='la Solicitud'
+                    nameComplement='solicitud'
                     onBlur={setInfo}
                 />
                 {/* TIPO DE PERSONA */}
@@ -63,14 +62,14 @@ const DatosGenerales = ({ setInfoGeneral, infoGeneral }) => {
                 </div>
                 {/* TIPO DE SOLICITUD */}
                 <div className='col-md-6 py5'>
-                    <SelectSINo
+                    <SelectSiNo
                         onChange={setInfo}
                         textLabel={`Fuiste beneficiado(a) con algún apoyo en ejercicio ${AnioAnterior}*`}
                         name={'beneficios_ejercicio_ano_anterior'}
                     />
                 </div>
                 <div className='col-md-6 py5'>
-                    <SelectSINo
+                    <SelectSiNo
                         onChange={setInfo}
                         textLabel={`Los apoyos que solicitas van destinados al mismo predio? *:`}
                         name={'apoyo_predio_ano_actual'}

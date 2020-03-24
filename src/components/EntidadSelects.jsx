@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react'
 import AlertError from '../singles/AlertError'
 import SelectEstados from '../singles/SelectEstados'
+/* CONTEXT */
+import catalogosContext from "./../context/catalogos/catalogosContext";
 
 const EntidadSelects = (props) => {
-    const { textoComplemetarioLabel, nameComplement, onBlur, estados } = props
+    /* Context catalogos */
+    const catsContext = useContext(catalogosContext)
+    const { estados } = catsContext.catalogos
+    const { textoComplemetarioLabel, nameComplement, onBlur } = props
 
     const [entidad, setEntidad] = useState({
         municipios: [],

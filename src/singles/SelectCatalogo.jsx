@@ -6,12 +6,10 @@
 *    }
 *
 * */
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 
 const SelectCatalogo = props => {
-
-
 
     /* componente que extrae */
     const { name, className, onChange, onBlur, data } = props

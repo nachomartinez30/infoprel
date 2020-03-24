@@ -48,7 +48,7 @@ const InputCURP = (props) => {
             {valido === false &&
                 <div className="col-sm-4">
                     <small className="text-danger">
-                        El CURP no es valido.
+                        La CURP no es valida.
                 </small>
                 </div>
             }

@@ -1,4 +1,4 @@
-const exctractInfoCurp = (curp) => {
+const extractInfoCurp = (curp) => {
     const anio = curp.substr(4, 2)
     const mes = curp.substr(6, 2)
     const dia = curp.substr(8, 2)
@@ -13,4 +13,4 @@ const exctractInfoCurp = (curp) => {
     });
 }
 
-export default exctractInfoCurp;
+export default extractInfoCurp;

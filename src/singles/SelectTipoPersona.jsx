@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import AlertError from './AlertError';
+import React from 'react'
 
 const SelectTipoPersona = (props) => {
 

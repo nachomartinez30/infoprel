@@ -10,8 +10,7 @@ const InputRFC = (props) => {
         defaultValue,
         placeholder,
         className,
-        onChange,
-        key
+        onChange
     } = props
 
     const [valido, setValido] = useState('')

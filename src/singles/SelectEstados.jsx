@@ -12,7 +12,6 @@ const SelectEstados = (props) => {
             onBlur={onBlur}
         >
             <option value=''>--Seleccione--</option>
-
             {typeof data != 'undefined' && data.map((item) => <option key={item.cve_ent} value={item.cve_ent}>{item.nom_ent}</option>)}
         </select>
     );

@@ -3,6 +3,7 @@ import moment from 'moment'
 /* HELPERS */
 import ToMayus from '../helpers/ToMayus'
 import curpValida from '../helpers/curpValida'
+import extractInfoCurp from '../helpers/extractInfoCurp';
 /* componentes propios */
 import LineaDivision from "../singles/LineaDivision";
 import InputRFC from '../singles/InputRFC'
@@ -14,10 +15,9 @@ import SelectNacionalidad from '../singles/SelectNacionalidad';
 import SelectTipoPersona from '../singles/SelectTipoPersona';
 import SelectEtnias from '../singles/SelectEtnias';
 import redirectToCURP from '../helpers/redirectToCURP';
+import InputCURP from '../singles/InputCURP';
 /* CONTEXT */
 import catalogosContext from "./../context/catalogos/catalogosContext";
-import InputCURP from '../singles/InputCURP';
-import exctractInfoCurp from '../helpers/exctractInfoCurp';
 
 
 const InfoPersonaFisica = () => {
@@ -70,7 +70,7 @@ const InfoPersonaFisica = () => {
         if (typeof curp_fisica !== 'undefined') {
             if (curp_fisica.length >= 18) {
                 /* EXCTRAE DEL HELPER LA INFORMACION PARA RELLENAR */
-                const infoCurp = exctractInfoCurp(curp_fisica)
+                const infoCurp = extractInfoCurp(curp_fisica)
                 setInfoP_FLocal({
                     ...infoP_FLocal,
                     FnacimientoF: moment(`${infoCurp.anio}-${infoCurp.mes}-${infoCurp.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
@@ -152,21 +152,6 @@ const InfoPersonaFisica = () => {
                         onKeyDownCapture={ToMayus}
                         onBlur={curpValida}
                     />
-                    {/* <input
-                        name="curp_fisica"
-                        id="curp_fisica"
-                        className="form-control"
-                        type="text"
-                        maxLength={18}
-                        minLength={18}
-                        defaultValue={curp_fisica}
-                        placeholder="Ingresa tu CURP"
-                        onChange={setInfo}
-                        onKeyDownCapture={ToMayus}
-                        onBlur={curpValida}
-                    /> */}
-
-
                     <small className="form-text form-text-error" id="msg_error_curp" htmlFor="curp_fisica" style={{ display: 'none' }}>CURP necesaria</small>
                 </div>
                 <div className="col-md-3 pt25">
