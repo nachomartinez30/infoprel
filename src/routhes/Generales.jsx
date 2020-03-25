@@ -22,61 +22,41 @@ import DatosPredio from '../components/DatosPredio';
 
 
 const Generales = () => {
+    const API_REQUEST = process.env.REACT_APP_BACKEN_URL;
+    /* CONTEXT */
+    const apoyoContext = useContext(apoyosContext);
+    const catsContext = useContext(catalogosContext)
+
+    const { agregarCatalogos } = catsContext.catalogos
+    const { rfc } = apoyoContext.checkCertState;
 
     /* BOOLEANOS PARA MOSTRAR SECIONES*/
     const [tiene_representante, setTiene_representante] = useState(false)
     const [mismoDomicilio, setMismoDomicilio] = useState(false)
     const [cuentaConPredio, setCuentaConPredio] = useState(false)
-
-
     const [tieneComisariado, setTieneComisariado] = useState(false)
 
-    const [representante, setRepresentante] = useState({})
-    const [presidente, setPresidente] = useState({})
-    const [secretario, setSecretario] = useState({})
-    const [tesorero, setTesorero] = useState({})
 
-    const [domGeo, setDomGeo] = useState({})
-    const [domNotif, setDomNotif] = useState({})
 
-    const [datosPredio, setDatosPredio] = useState({})
+    const [representante, setRepresentante] = useState({ state: 'representante' })
+    const [presidente, setPresidente] = useState({ state: 'presidente' })
+    const [secretario, setSecretario] = useState({ state: 'secretario' })
+    const [tesorero, setTesorero] = useState({ state: 'tesorero' })
+    const [personaFisica, setPersonaFisica] = useState({ state: 'personaFisica' })
+    const [personaMoral, setPersonaMoral] = useState({ state: 'personaMoral' })
+    const [datosGenerales, setDatosGenerales] = useState({ state: 'datosGenerales' })
+    const [solicitante, setSolicitante] = useState({ state: 'solicitante' })
+    const [domGeo, setDomGeo] = useState({state:'domGeo'})
+    const [domNotif, setDomNotif] = useState({state:'domNotif'})
+    const [datosPredio, setDatosPredio] = useState({state:'datosPredio'})
 
-    const API_REQUEST = process.env.REACT_APP_BACKEN_URL;
 
-    const apoyoContext = useContext(apoyosContext);
-
-    const catsContext = useContext(catalogosContext)
-
-    const {
-        agregarCatalogos,
-        nacionalidades,
-        tipos_etnias,
-        estados_civiles,
-        documentos_acreditacion,
-        personalidades_juridicas_F,
-        personalidades_juridicas_M,
-        estados
-    } = catsContext.catalogos
-
-    const { pass, agregarCertYKey, cerValido, rfc } = apoyoContext.checkCertState;
 
     /* 
      * Captura en las keys del JSON los nombres de los inputs, y sus respectivos valores
      * debe ser pasada como propiedad del componente
      * ================================= ver componente <DatosGenerales/> ===============
      */
-    const [infoGeneral, setInfoGeneral] = useState({
-        registro_id: null,
-        persona_fisica: null,
-        persona_moral: null,
-        representante_legal: null,
-        solicitante: null,
-        comisariados: null,
-        notificaciones: null,
-        domicilio_geografico: null,
-        predios: null,
-        solicitud: null
-    })
 
     useEffect(() => {
 
@@ -191,41 +171,46 @@ const Generales = () => {
             })
             .catch(
                 error => {
-                    AlertError("Falla al cargar catálogos", error)
+                    AlertError("Falla al cargar catálogos, Recargando página", error)
                     console.log(error)
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5000);
                 }
             )
 
     }, [''])
 
-    const setSameDomNotif = () => {
-        setDomNotif({
-            ...domNotif,
-            estado_domicilio_notificacion: domGeo.estado_domicilio_geografico,
-            municipio_domicilio_notificacion: domGeo.municipio_domicilio_geografico,
-            localidad_domicilio_notificacion: domGeo.localidad_domicilio_geografico,
-            domicilio_notificacion: domGeo.nombre_vialidad_dom_geo + " " + domGeo.num_ext_solicitante_dom_geo + " " + domGeo.comp_num_ext_solicitante_dom_geo,
-            cp_dom_notif: domGeo.cp_solicitante_dom_geo
-        })
+    // const setSameDomNotif = () => {
+    //     setDomNotif({
+    //         ...domNotif,
+    //         estado_domicilio_notificacion: domGeo.estado_domicilio_geografico,
+    //         municipio_domicilio_notificacion: domGeo.municipio_domicilio_geografico,
+    //         localidad_domicilio_notificacion: domGeo.localidad_domicilio_geografico,
+    //         domicilio_notificacion: domGeo.nombre_vialidad_dom_geo + " " + domGeo.num_ext_solicitante_dom_geo + " " + domGeo.comp_num_ext_solicitante_dom_geo,
+    //         cp_dom_notif: domGeo.cp_solicitante_dom_geo
+    //     })
+    //     return (
+    //         <DatosDomNotificacion
+    //             key='domicilio_notificacion'
+    //             setState={setDomNotif}
+    //             state={domNotif}
+    //         />
+    //     )
 
-
-        return (
-            <DatosDomNotificacion
-                key='domicilio_notificacion'
-                setState={setDomNotif}
-                state={domNotif}
-            />
-        )
-
-    }
+    // }
 
     const checkFaltantes = () => {
         AlertExito('checando', 'faltantes')
-        if ('') {
-            return <Redirect to='/' />
-        } else {
-            return false
-        }
+        console.log('representante===' + representante)
+        console.log('presidente===' + presidente)
+        console.log('secretario===' + secretario)
+        console.log('tesorero===' + tesorero)
+        console.log('personaFisica===' + personaFisica)
+        console.log('personaMoral===' + personaMoral)
+        console.log('datosGenerales===' + datosGenerales)
+        console.log('solicitante===' + solicitante)
+        debugger
     }
 
     return (
@@ -236,21 +221,24 @@ const Generales = () => {
             <LineaDivision />
             {/* =============================================================================== */}
             <DatosGenerales
-                setInfoGeneral={setInfoGeneral}
-                infoGeneral={infoGeneral}
+                setState={setDatosGenerales}
+                state={datosGenerales}
             />
             {/* =============================================================================== */}
             {/* Formulario segun tipo de persona FISICA*/}
 
-            {infoGeneral.tipo_persona_id === '1' &&
-                <InfoPersonaFisica setInfoGeneral={setInfoGeneral} infoGeneral={infoGeneral} />
+            {datosGenerales.tipo_persona_id === '1' &&
+                <InfoPersonaFisica setState={setPersonaFisica} state={personaFisica} />
             }
             {/* Formulario segun tipo de persona MORAL*/}
-            {infoGeneral.tipo_persona_id === '2' &&
-                <InfoPersonaMoral setInfoGeneral={setInfoGeneral} infoGeneral={infoGeneral} />
+            {datosGenerales.tipo_persona_id === '2' &&
+                <InfoPersonaMoral setState={setPersonaMoral} state={personaMoral} />
             }
             {/* =============================================================================== */}
-            <DatosSolicitante />
+            <DatosSolicitante
+                state={solicitante}
+                setState={setSolicitante}
+            />
             {/* =============================================================================== */}
 
 
@@ -270,7 +258,8 @@ const Generales = () => {
                     key='representante'
                     state={representante}
                     setState={setRepresentante}
-                />}
+                />
+            }
             {/* =============================================================================== */}
 
             {/* SECCION DATOS DEL COMISARIADO */}

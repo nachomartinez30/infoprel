@@ -1,25 +1,19 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import moment from "moment";
-/* import del context para status general */
-import apoyosContext from '../context/apoyos/apoyosContext'
+
 /* COMPONENTES PROPIOS */
 import EntidadSelects from './EntidadSelects';
 import SelectSiNo from '../singles/SelectSiNo';
 /* CONTEXT */
-import catalogosContext from "./../context/catalogos/catalogosContext";
 
-const DatosGenerales = ({ setInfoGeneral, infoGeneral }) => {
-    /* Context catalogos */
-    const catsContext = useContext(catalogosContext)
-    const { estados } = catsContext.catalogos
-    // const apoyoContext = useContext(apoyosContext);
+
+const DatosGenerales = ({ setState, state }) => {
 
     const AnioAnterior = moment().format('YYYY') - 1;
-
     const setInfo = (input) => {
-        // console.log(infoGeneral);
-        setInfoGeneral({
-            ...infoGeneral,
+
+        setState({
+            ...state,
             [input.target.name]: input.target.value
         })
     }

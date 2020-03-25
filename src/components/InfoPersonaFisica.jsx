@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import moment from 'moment'
 /* HELPERS */
 import ToMayus from '../helpers/ToMayus'
@@ -20,7 +20,7 @@ import InputCURP from '../singles/InputCURP';
 import catalogosContext from "./../context/catalogos/catalogosContext";
 
 
-const InfoPersonaFisica = () => {
+const InfoPersonaFisica = (props) => {
 
     const catsContext = useContext(catalogosContext)
     const {
@@ -32,16 +32,16 @@ const InfoPersonaFisica = () => {
         estados
     } = catsContext.catalogos
 
-    const [infoP_FLocal, setInfoP_FLocal] = useState({})
+    const { state, setState } = props
 
     useEffect(() => {
         // cuando el state cambia
-    }, [infoP_FLocal])
+    }, [state])
 
 
     const setInfo = (input) => {
-        setInfoP_FLocal({
-            ...infoP_FLocal,
+        setState({
+            ...state,
             [input.target.name]: input.target.value
         })
     }
@@ -54,16 +54,9 @@ const InfoPersonaFisica = () => {
         curp_fisica,
         sexo_fisica,
         rfc_fisica,
-        doc_acredita_fisica,
-        estado_nac_fis,
         FnacimientoF,
-        edo_civil_fisica,
-        nacionalidad_fisica,
-        telefono_fisica,
-        movil_fisica,
-        tipo_persona,
-        etniaF,
-    } = infoP_FLocal
+        nacionalidad_fisica
+    } = state
 
     const fillDatosByCURP = () => {
         /* rellena los datos de genero y echa de nacimiento de persona fisica */
@@ -71,8 +64,8 @@ const InfoPersonaFisica = () => {
             if (curp_fisica.length >= 18) {
                 /* EXCTRAE DEL HELPER LA INFORMACION PARA RELLENAR */
                 const infoCurp = extractInfoCurp(curp_fisica)
-                setInfoP_FLocal({
-                    ...infoP_FLocal,
+                setState({
+                    ...state,
                     FnacimientoF: moment(`${infoCurp.anio}-${infoCurp.mes}-${infoCurp.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
                     sexo_fisica: (infoCurp.sexo === 'H') ? 1 : 2,
                     nacionalidad_fisica: infoCurp.nacionalidad
