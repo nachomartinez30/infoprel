@@ -10,25 +10,27 @@ import SelectSiNo from '../singles/SelectSiNo';
 import DatosDomGeo from '../components/DatosDomGeo'
 import AlertCargando from '../singles/AlertCargando';
 import AlertExito from '../singles/AlertExito';
+import DatosIndividuo from '../components/DatosIndividuo';
+import DatosDomNotificacion from '../components/DatosDomNotificacion';
+import DatosPredio from '../components/DatosPredio';
 import AlertError from '../singles/AlertError';
 /* CONTEXT */
 import apoyosContext from "./../context/apoyos/apoyosContext";
 import catalogosContext from "./../context/catalogos/catalogosContext";
 
-import DatosIndividuo from '../components/DatosIndividuo';
-import DatosDomNotificacion from '../components/DatosDomNotificacion';
-import DatosPredio from '../components/DatosPredio';
-
 
 
 const Generales = () => {
     const API_REQUEST = process.env.REACT_APP_BACKEN_URL;
+    const API_ACCESS = process.env.REACT_APP_BACKEN_URL_ACCESS;
     /* CONTEXT */
     const apoyoContext = useContext(apoyosContext);
     const catsContext = useContext(catalogosContext)
 
     const { agregarCatalogos } = catsContext.catalogos
     const { rfc } = apoyoContext.checkCertState;
+
+    const { agregarRegistro } = apoyoContext.registros
 
     /* BOOLEANOS PARA MOSTRAR SECIONES*/
     const [tiene_representante, setTiene_representante] = useState(false)
@@ -38,18 +40,34 @@ const Generales = () => {
 
 
 
-    const [representante, setRepresentante] = useState({ state: 'representante' })
-    const [presidente, setPresidente] = useState({ state: 'presidente' })
-    const [secretario, setSecretario] = useState({ state: 'secretario' })
-    const [tesorero, setTesorero] = useState({ state: 'tesorero' })
-    const [personaFisica, setPersonaFisica] = useState({ state: 'personaFisica' })
-    const [personaMoral, setPersonaMoral] = useState({ state: 'personaMoral' })
-    const [datosGenerales, setDatosGenerales] = useState({ state: 'datosGenerales' })
-    const [solicitante, setSolicitante] = useState({ state: 'solicitante' })
-    const [domGeo, setDomGeo] = useState({state:'domGeo'})
-    const [domNotif, setDomNotif] = useState({state:'domNotif'})
-    const [datosPredio, setDatosPredio] = useState({state:'datosPredio'})
+    const [personaFisica, setPersonaFisica] = useState({
+        id: null,
+        persona_id: null,
+        persona_siiac_id: null,
+        persona_fisica_siiac_id: null,
+        "rfc_generado": false,
+    })
+    const [personaMoral, setPersonaMoral] = useState({})
+    const [representante, setRepresentante] = useState({})
+    const [presidente, setPresidente] = useState({})
+    const [secretario, setSecretario] = useState({})
+    const [tesorero, setTesorero] = useState({})
+    const [datosGenerales, setDatosGenerales] = useState({})
+    const [solicitante, setSolicitante] = useState({})
+    const [domGeo, setDomGeo] = useState({})
+    const [domNotif, setDomNotif] = useState({})
+    const [datosPredio, setDatosPredio] = useState({})
 
+    const [folioInforpel, setStateFolioInforpel] = useState('')
+    const [token, setToken] = useState('')
+
+    const [credentials, setCredentials] = useState({
+        client_id: 2,
+        client_secret: 'dCx2BaYOXpts4Vogkx9nUpltU48dDoT5OZEQ1tip',
+        grant_type: 'password',
+        username: 'infoprel@conafor.gob.mx',
+        password: 'C0n4f0r2020'
+    })
 
 
     /* 
@@ -123,6 +141,36 @@ const Generales = () => {
             .then(response => response.json())
             .then(data => data)
 
+        /* TOKEN DE ACCESOS */
+
+        const tokenHeaders = new Headers();
+        tokenHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        const tokenUrlencoded = new URLSearchParams();
+        tokenUrlencoded.append("client_id", "2");
+        tokenUrlencoded.append("client_secret", "dCx2BaYOXpts4Vogkx9nUpltU48dDoT5OZEQ1tip");
+        tokenUrlencoded.append("grant_type", "password");
+        tokenUrlencoded.append("username", "infoprel@conafor.gob.mx");
+        tokenUrlencoded.append("password", "C0n4f0r2020");
+
+        /* TOKEN DE ACCESO */
+        const tokenRequestOptions = {
+            method: 'POST',
+            headers: tokenHeaders,
+            body: tokenUrlencoded,
+            redirect: 'follow'
+        };
+
+        const token = fetch(`${API_ACCESS}oauth/token`, tokenRequestOptions)
+            .then(response => response.json())
+            .then(token => {
+                return token.access_token
+            })
+            .catch(error => {
+                AlertError('ERROR Token', error)
+                console.log('error', error)
+            });
+
 
         /* REVISA QUE HAYAN SIDO TODOOS CARGADOS */
         /* ¡¡¡¡IMPORTANTE!!!!
@@ -143,12 +191,12 @@ const Generales = () => {
             tipo_vialialidades,
             tipos_asentamientos,
             terminos_genericos,
-            tipos_predios
+            tipos_predios,
+            token
         ]
 
         Promise.all(fetchCatalogos)
             .then(respuestas => {
-
                 const catalogos = {
                     nacionalidades: respuestas[0].nacionalidades,
                     tipos_etnias: respuestas[1].data,
@@ -168,6 +216,10 @@ const Generales = () => {
                 }
                 AlertExito('Todos los catalogos se cargaron')
                 agregarCatalogos(catalogos)
+                agregarRegistro({
+                    ...apoyoContext.registros,
+                    token: respuestas[15]
+                })
             })
             .catch(
                 error => {
@@ -200,18 +252,77 @@ const Generales = () => {
 
     // }
 
+
     const checkFaltantes = () => {
         AlertExito('checando', 'faltantes')
-        console.log('representante===' + representante)
-        console.log('presidente===' + presidente)
-        console.log('secretario===' + secretario)
-        console.log('tesorero===' + tesorero)
-        console.log('personaFisica===' + personaFisica)
-        console.log('personaMoral===' + personaMoral)
-        console.log('datosGenerales===' + datosGenerales)
-        console.log('solicitante===' + solicitante)
-        debugger
+
+        const { token } = apoyoContext.registros
+
+        /* get FOLIO INFOPREL */
+        const registroHeaders = new Headers();
+        registroHeaders.append("Authorization", `Bearer ${token}`);
+
+
+        const folioRequestOptions = {
+            method: 'GET',
+            headers: registroHeaders,
+            redirect: 'follow'
+        };
+        const folio_infoprel = fetch(`${API_REQUEST}infoprel_online/registros/get_folio_manual?id_estado=${datosGenerales.estado_solicitud}&id_ciclo=${'111'}`, folioRequestOptions)
+            .then(response => response.json())
+            .then(result => {
+                return result.folio_infoprel[0].folio_infoprel
+            })
+            .catch(error => {
+                console.log('error', error)
+            });
+
+
+
+        const registroRequestOptions = {
+            method: 'POST',
+            headers: registroHeaders,
+            redirect: 'follow'
+        };
+
+        const registro_id = fetch(`${API_REQUEST}infoprel_online/registros/guardar_registro`, registroRequestOptions)
+            .then(response => response.json())
+            .then(result => {
+
+                return result.data.registro_id
+            })
+            .catch(error => console.log('error', error));
+
+        const requests = [
+            folio_infoprel,
+            registro_id
+        ];
+
+        Promise.all(requests)
+            .then(respuestas => {
+                agregarRegistro({
+                    ...apoyoContext.registros,
+                    folio_infoprel: respuestas[0],
+                    registro_id: respuestas[1],
+                    comisariados: [presidente, secretario, tesorero],
+                    domicilio_geografico: domGeo,
+                    notificaciones: [domNotif],
+                    persona_fisica: personaFisica,
+                    persona_moral: personaMoral,
+                    predios: [datosPredio],
+                    representante_legal: representante,
+                    solicitante: solicitante,
+                })
+            })
+            .catch(
+                error => {
+                    AlertError("Falla al cargar", error)
+                    console.log(error)
+                }
+            )
     }
+
+
 
     return (
         <div className='py25'>

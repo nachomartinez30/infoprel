@@ -27,7 +27,7 @@ const InfoPersonaFisica = (props) => {
         nacionalidades,
         tipos_etnias,
         estados_civiles,
-        documentos_acreditacion,
+        doc_acreditacion_id,
         personalidades_juridicas_F,
         estados
     } = catsContext.catalogos
@@ -46,24 +46,24 @@ const InfoPersonaFisica = (props) => {
         })
     }
 
-
+/* VALORES SDEL STATE */
     const {
-        nombre_fisica,
-        apellido_p_fisica,
-        apellido_m_fisica,
-        curp_fisica,
-        sexo_fisica,
-        rfc_fisica,
-        FnacimientoF,
-        nacionalidad_fisica
+        nombre,
+        apellido_paterno,
+        apellido_materno,
+        curp,
+        sexo_id,
+        rfc,
+        fecha_nacimiento,
+        nacionalidad_id
     } = state
 
     const fillDatosByCURP = () => {
         /* rellena los datos de genero y echa de nacimiento de persona fisica */
-        if (typeof curp_fisica !== 'undefined') {
-            if (curp_fisica.length >= 18) {
+        if (typeof curp !== 'undefined') {
+            if (curp.length >= 18) {
                 /* EXCTRAE DEL HELPER LA INFORMACION PARA RELLENAR */
-                const infoCurp = extractInfoCurp(curp_fisica)
+                const infoCurp = extractInfoCurp(curp)
                 setState({
                     ...state,
                     FnacimientoF: moment(`${infoCurp.anio}-${infoCurp.mes}-${infoCurp.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
@@ -86,62 +86,61 @@ const InfoPersonaFisica = (props) => {
                 <div className="col-md-4">
                     <label className="control-label" htmlFor="nombre">Nombre(s) *:</label>
                     <input
-                        defaultValue={nombre_fisica}
+                        defaultValue={nombre}
                         className="form-control"
                         maxLength={45}
                         minLength={5}
                         type="text"
-                        name="nombre_fisica"
-                        onKeyPress={setInfo}
+                        name="nombre"
+                        onChange={setInfo}
                         placeholder="Ingresa tu Nombre"
                     />
                     {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="nombre_fisica" style={{ display: 'none' }}>Nombre necesario</small>
+                    <small className="form-text form-text-error" htmlFor="nombre" style={{ display: 'none' }}>Nombre necesario</small>
                 </div>
                 <div className="col-md-4">
-                    <label className="control-label" htmlFor="apellido_p_fisica">Apellido Paterno *:</label>
+                    <label className="control-label" htmlFor="apellido_paterno">Apellido Paterno *:</label>
                     <input
-                        defaultValue={apellido_p_fisica}
+                        defaultValue={apellido_paterno}
                         className="form-control"
                         type="text"
-                        name="apellido_p_fisica"
+                        name="apellido_paterno"
                         maxLength={45}
                         minLength={5}
                         placeholder="Ingresa tu Apellido Paterno"
                         onChange={setInfo}
                     />
                     {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="apellido_p_fisica" style={{ display: 'none' }}>Apellido necesario</small>
+                    <small className="form-text form-text-error" htmlFor="apellido_paterno" style={{ display: 'none' }}>Apellido necesario</small>
                 </div>
                 <div className="col-md-4">
-                    <label className="control-label" htmlFor="apellido_m_fisica">Apellido Materno :</label>
+                    <label className="control-label" htmlFor="apellido_materno">Apellido Materno :</label>
                     <input
-                        defaultValue={apellido_m_fisica}
+                        defaultValue={apellido_materno}
                         className="form-control"
                         type="text"
-                        name="apellido_m_fisica"
+                        name="apellido_materno"
                         maxLength={45}
                         minLength={5}
                         placeholder="Ingresa tu Apellido Materno"
                         onChange={setInfo}
                     />
                     {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="apellido_m_fisica" style={{ display: 'none' }}>Apellido necesario</small>
+                    <small className="form-text form-text-error" htmlFor="apellido_materno" style={{ display: 'none' }}>Apellido necesario</small>
                 </div>
             </div>
             <div className="row py5">
                 <div className="col-md-6 col-lg-6 py5"
                     onBlur={fillDatosByCURP}
                 >
-                    <label className="control-label" htmlFor="curp_fisica">Clave Única de Registro de Población (CURP) *:</label>
+                    <label className="control-label" htmlFor="curp">Clave Única de Registro de Población (CURP) *:</label>
                     <InputCURP
-                        name="curp_fisica"
-                        id="curp_fisica"
+                        name="curp"
                         className="form-control"
-                        defaultValue={curp_fisica}
+                        defaultValue={curp}
                         placeholder="Ingresa tu CURP"
                         onChange={setInfo}
-                        curp={curp_fisica}
+                        curp={curp}
                         onKeyDownCapture={ToMayus}
                         onBlur={curpValida}
                     />
@@ -155,12 +154,12 @@ const InfoPersonaFisica = (props) => {
                         onClick={() => redirectToCURP()} />
                 </div>
                 <div className="col-md-3 m-t-10">
-                    <label className="control-label" htmlFor="sexo_fisica">Sexo <span className="form-text">*</span>:</label>
+                    <label className="control-label" htmlFor="sexo_id">Sexo <span className="form-text">*</span>:</label>
                     <SelectSexo
                         className='form-control'
-                        defaultValue={sexo_fisica}
-                        name='sexo_fisica'
-                        key='sexo_fisica'
+                        defaultValue={sexo_id}
+                        name='sexo_id'
+                        key='sexo_id'
                         onChange={setInfo}
                     />
                 </div>
@@ -168,27 +167,27 @@ const InfoPersonaFisica = (props) => {
             <div className="row py5">
                 <div className="col-md-6">
                     <div className="form-group">
-                        <label className="control-label" htmlFor="rfc_fisica">Registro Federal de Contribuyentes (RFC) *:</label>
+                        <label className="control-label" htmlFor="rfc">Registro Federal de Contribuyentes (RFC) *:</label>
                         <InputRFC
                             className='form-control'
                             placeholder='RFC Persona física'
-                            rfc={rfc_fisica}
+                            rfc={rfc}
                             onKeyPressCapture={ToMayus}
                             onChange={setInfo}
-                            name='rfc_fisica'
-                            key='rfc_fisica'
+                            name='rfc'
+                            key='rfc'
                         />
 
-                        <small className="form-text form-text-error" htmlFor="rfc_fisica" style={{ display: 'none' }}>RFC necesario</small>
+                        <small className="form-text form-text-error" htmlFor="rfc" style={{ display: 'none' }}>RFC necesario</small>
                     </div>
                 </div>
                 <div className="col-md-6">
                     <label className="control-label">Documento con el que te acreditas<span className="form-text">*</span>:</label>
                     <SelectDocAcreditacion
-                        data={documentos_acreditacion}
+                        data={doc_acreditacion_id}
                         className='form-control'
-                        name='doc_acredita_fisica'
-                        key='doc_acredita_fisica'
+                        name='doc_acreditacion_id'
+                        key='doc_acreditacion_id'
                         onChange={setInfo}
                     />
                 </div>
@@ -199,31 +198,31 @@ const InfoPersonaFisica = (props) => {
                     <SelectEstados
                         data={estados}
                         className="form-control"
-                        name="estado_nac_fis"
-                        key='estado_nac_fis'
+                        name="estado_nacimiento_id"
+                        key='estado_nacimiento_id'
                         onChange={setInfo}
                     />
 
                     <small className="form-text form-text-error" style={{ display: 'none' }} />
                 </div>
                 <div className="col-md-4">
-                    <label className="control-label" htmlFor="FnacimientoF">Fecha de nacimiento<span className="form-text">*</span>:</label>
+                    <label className="control-label" htmlFor="fecha_nacimiento">Fecha de nacimiento<span className="form-text">*</span>:</label>
                     <input
-                        name="FnacimientoF"
+                        name="fecha_nacimiento"
                         className="form-control"
                         type="date"
                         placeholder="DD/MM/AAAA"
                         onChange={setInfo}
-                        defaultValue={FnacimientoF}
+                        defaultValue={fecha_nacimiento}
                     />
-                    <small htmlFor="FnacimientoF" className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
+                    <small htmlFor="fecha_nacimiento" className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
                 </div>
                 <div className="col-md-4">
                     <label className="control-label">Estado Civil<span className="form-text">*</span>:</label>
                     <SelectEdoCivil
                         data={estados_civiles}
-                        name="edo_civil_fisica"
-                        key="edo_civil_fisica"
+                        name="estado_civil_id"
+                        key="estado_civil_id"
                         className="form-control"
                         onChange={setInfo}
                     />
@@ -234,20 +233,20 @@ const InfoPersonaFisica = (props) => {
                     <label className="control-label" htmlFor="nacionalidad_fisica">Nacionalidad
         <span className="form-text">*</span>:</label>
                     <SelectNacionalidad
-                        defaultValue={nacionalidad_fisica}
+                        defaultValue={nacionalidad_id}
                         data={nacionalidades}
                         onChange={setInfo}
                         className="form-control"
-                        name="nacionalidad_fisica"
-                        key="nacionalidad_fisica"
+                        name="nacionalidad_id"
+                        key="nacionalidad_id"
                     />
-                    <small htmlFor="nacionalidad_fisica" className="form-text form-text-error" style={{ display: 'none' }} />
+                    <small htmlFor="nacionalidad_id" className="form-text form-text-error" style={{ display: 'none' }} />
                 </div>
                 <div className="col-md-3">
                     <label htmlFor="phone">Teléfono fijo:</label>
                     <input
                         onChange={setInfo}
-                        name="telefono_fisica"
+                        name="telefono"
                         type="text"
                         maxLength={10}
                         className="form-control"
@@ -259,7 +258,7 @@ const InfoPersonaFisica = (props) => {
                 <div className="col-md-3">
                     <label htmlFor="phone">Teléfono móvil:</label>
                     <input
-                        name="movil_fisica"
+                        name="celular"
                         type="text"
                         maxLength={10}
                         minLength={10}
@@ -281,12 +280,12 @@ const InfoPersonaFisica = (props) => {
                     />
                 </div>
                 <div className="col-md-6">
-                    <label className="control-label" htmlFor="etniaF">Grupo indígena de pertenencia:</label>
+                    <label className="control-label" htmlFor="tipo_etnia_id">Grupo indígena de pertenencia:</label>
                     <SelectEtnias
                         data={tipos_etnias}
                         className="form-control"
-                        name="etniaF"
-                        key="etniaF"
+                        name="tipo_etnia_id"
+                        key="tipo_etnia_id"
                         onChange={setInfo}
                     />
                 </div>
