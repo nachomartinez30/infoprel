@@ -39,10 +39,9 @@ const DatosIndividuo = (props) => {
     const { state, setState } = props
 
     const fillInfoCurp = () => {
-
         /* Extrae la informacion de la CURP y autocompleta fechga de nacimiento y sexo  */
-
-        const dataExtracted = extractInfoCurp(state.curp)
+        
+        const dataExtracted = (typeof state.curp != 'undefined') ? extractInfoCurp(state.curp) : ''
         setState({
             ...state,
             fecha_nacimiento: moment(`${dataExtracted.anio}-${dataExtracted.mes}-${dataExtracted.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
