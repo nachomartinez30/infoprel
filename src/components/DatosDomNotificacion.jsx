@@ -3,7 +3,7 @@ import EntidadSelects from './EntidadSelects'
 
 const DatosDomNotificacion = (props) => {
 
-    const { state, setState } = props
+    const { state, setState, id_section, validacion } = props
 
     const setInfo = input => {
         setState({
@@ -13,8 +13,8 @@ const DatosDomNotificacion = (props) => {
     }
 
     return (
-        <React.Fragment>
-           <div className="row">
+        <div id={id_section}>
+            <div className="row">
                 <EntidadSelects
                     textoComplemetarioLabel='predio'
                     nameComplement='domicilio_notificacion'
@@ -32,7 +32,7 @@ const DatosDomNotificacion = (props) => {
                             type="text"
                             placeholder="Ingresa el domicilio completo"
                         />
-                        
+
                     </div>
                 </div>
                 <div className="col-md-4">
@@ -111,7 +111,7 @@ const DatosDomNotificacion = (props) => {
                     </div>
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 

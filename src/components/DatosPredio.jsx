@@ -11,7 +11,7 @@ import catalogosContext from "./../context/catalogos/catalogosContext";
 
 const DatosPredio = (props) => {
 
-    const { state, setState } = props
+    const { state, setState, id_section, validacion } = props
 
     const catsContext = useContext(catalogosContext)
     const {
@@ -28,7 +28,7 @@ const DatosPredio = (props) => {
     }
 
     return (
-        <div id="div_predio">
+        <div id={id_section}>
             <div className="row">
                 <div className="col-md-6 ">
                     <div className="form-group">
@@ -91,7 +91,7 @@ const DatosPredio = (props) => {
                             name="acre_predio"
                             className="form-control"
                         />
-                         
+
                     </div>
                 </div>
                 <div className="col-md-3">

@@ -12,32 +12,23 @@ import catalogosContext from "./../context/catalogos/catalogosContext";
 import SelectEstados from '../singles/SelectEstados';
 import SelectEtnias from '../singles/SelectEtnias';
 
-const InfoPersonaMoral = () => {
+const InfoPersonaMoral = (props) => {
+
+    const { setState, state, validacion, id_section } = props
 
     const catsContext = useContext(catalogosContext)
     const {
-        nacionalidades,
         tipos_etnias,
-        estados_civiles,
         documentos_acreditacion,
         personalidades_juridicas_M,
         estados
     } = catsContext.catalogos
 
 
-    const [infoP_MLocal, setInfoP_MLocal] = useState({
-        inte_numero_hombres: 0,
-        inte_numero_mujeres: 0,
-        inte_total_integrantes: null,
-        inte_hombres_indigenas: 0,
-        inte_mujeres_indigenas: 0,
-        inte_total_indigenas: null
-    })
-
 
     const setInfo = (input) => {
-        setInfoP_MLocal({
-            ...infoP_MLocal,
+        setState({
+            ...state,
             [input.target.name]: input.target.value
         })
     }
@@ -46,8 +37,8 @@ const InfoPersonaMoral = () => {
     const sumIntegrantes = () => {
         /* suma los integrantes y los asigna al total */
         const suma = parseInt(inte_numero_hombres) + parseInt(inte_numero_mujeres)
-        setInfoP_MLocal({
-            ...infoP_MLocal,
+        setState({
+            ...state,
             inte_total_integrantes: suma
         })
     }
@@ -55,46 +46,28 @@ const InfoPersonaMoral = () => {
     const sumIntegrantesIndigenas = () => {
         /* suma los integrantes Indigenas y los asigna al total */
         const suma = parseInt(inte_hombres_indigenas) + parseInt(inte_mujeres_indigenas)
-        setInfoP_MLocal({
-            ...infoP_MLocal,
+        setState({
+            ...state,
             inte_total_indigenas: suma
         })
     }
 
-
     const {
         rfc_moral,
-        // nombre_fisica,
-        // apellido_p_fisica,
-        // apellido_m_fisica,
-        // curp_fisica,
-        // sexo_fisica,
-        // rfc_fisica,
-        // doc_acredita_fisica,
-        // estado_nac_fis,
-        // FnacimientoF,
-        // edo_civil_fisica,
-        // nacionalidad_fisica,
-        // telefono_fisica,
-        // movil_fisica,
-        // tipo_persona,
-        // etniaF,
         inte_hombres_indigenas,
         inte_mujeres_indigenas,
         inte_total_indigenas,
         inte_numero_hombres,
         inte_numero_mujeres,
         inte_total_integrantes
-    } = infoP_MLocal
+    } = state
 
 
     useEffect(() => {
-        console.log('Refres');
-
-    }, [infoP_MLocal])
+    }, [state])
 
     return (
-        <React.Fragment>
+        <div id={id_section}>
             <div className="row top-buffer">
                 <div className="col-md-12">
                     <h2>Datos Persona Moral</h2>
@@ -339,7 +312,7 @@ const InfoPersonaMoral = () => {
             </div>
             {/* INTEGRANTES DE PERSONA MORAL */}
 
-        </React.Fragment>
+        </div>
     );
 }
 

@@ -19,7 +19,7 @@ const DatosGenerales = ({ setState, state }) => {
     }
 
     return (
-        <React.Fragment>
+        <div id='seccion_datos_generales'>
             <div className='row'>
                 <EntidadSelects
                     textoComplemetarioLabel='la Solicitud'
@@ -71,7 +71,7 @@ const DatosGenerales = ({ setState, state }) => {
                 </div>
             </div>
             <hr />
-        </React.Fragment>
+        </div>
     );
 }
 

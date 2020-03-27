@@ -12,7 +12,7 @@ const SelectEtnias = props => {
             className={className}
             onChange={onChange}
         >
-            <option value=''>--Seleccione--</option>
+            <option value={null}>--Seleccione--</option>
             {typeof data != 'undefined' && data.map(item => <option key={item.id} value={item.id}>{item.nombre}</option>)}
         </select>
     );

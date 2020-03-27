@@ -16,6 +16,7 @@ import SelectEstados from '../singles/SelectEstados'
 import SelectEdoCivil from '../singles/SelectEdoCivil'
 /* CONTEXT */
 import catalogosContext from "./../context/catalogos/catalogosContext";
+import ErrorInputMsg from '../singles/ErrorInputMsg';
 
 const DatosIndividuo = (props) => {
 
@@ -36,11 +37,11 @@ const DatosIndividuo = (props) => {
     } = catsContext.catalogos
 
 
-    const { state, setState } = props
+    const { state, setState, validacion, id_section } = props
 
     const fillInfoCurp = () => {
         /* Extrae la informacion de la CURP y autocompleta fechga de nacimiento y sexo  */
-        
+
         const dataExtracted = (typeof state.curp != 'undefined') ? extractInfoCurp(state.curp) : ''
         setState({
             ...state,
@@ -60,13 +61,14 @@ const DatosIndividuo = (props) => {
 
 
     return (
-        <React.Fragment>
+        <div id={id_section}>
             <div className="row py5">
-                <div className="col-md-4 py5">
-                    <label className="control-label" htmlFor="nombre">Nombre(s) *:</label>
+                {/* nombre */}
+                <div className={`col-md-4 py5 ${(validacion.persona_fisica_nombre) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="persona_fisica_nombre">Nombre(s) *:</label>
                     <input
-                        defaultValue={state.nombre}
-                        name="nombre"
+                        defaultValue={state.persona_fisica_nombre}
+                        name="persona_fisica_nombre"
                         className="form-control"
                         maxLength={45}
                         minLength={5}
@@ -74,31 +76,32 @@ const DatosIndividuo = (props) => {
                         onChange={setInfo}
                         placeholder="Ingresa Nombre"
                     />
-                    {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="nombre" style={{ display: 'none' }}>Nombre necesario</small>
+                    {validacion.persona_fisica_nombre && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4 py5">
-                    <label className="control-label" htmlFor="apellido_p">Apellido Paterno *:</label>
+                {/* apellido paterno */}
+                <div className={`col-md-4 py5 ${(validacion.persona_fisica_apellido_paterno) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="persona_fisica_apellido_paterno">Apellido Paterno *:</label>
                     <input
-                        defaultValue={state.apellido_paterno}
+                        defaultValue={state.persona_fisica_apellido_paterno}
                         className="form-control"
                         type="text"
-                        name="apellido_paterno"
+                        name="persona_fisica_apellido_paterno"
                         maxLength={45}
                         minLength={5}
                         placeholder="Ingresa Apellido Paterno"
                         onChange={setInfo}
                     />
                     {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="apellido_p" style={{ display: 'none' }}>Apellido necesario</small>
+                    {validacion.persona_fisica_apellido_paterno && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4 py5">
+                {/* apellido  materno */}
+                <div className={`col-md-4 py5 ${(validacion.persona_fisica_apellido_materno) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="apellido_m">Apellido Materno :</label>
                     <input
-                        defaultValue={state.apellido_materno}
+                        defaultValue={state.persona_fisica_apellido_materno}
                         className="form-control"
                         type="text"
-                        name="apellido_materno"
+                        name="persona_fisica_apellido_materno"
                         maxLength={45}
                         minLength={5}
                         placeholder="Ingresa Apellido Materno"
@@ -109,21 +112,22 @@ const DatosIndividuo = (props) => {
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-6 col-lg-6 py5"
+                {/* curp */}
+                <div className={`col-md-6 col-lg-6 py5 ${(validacion.persona_fisica_curp) ? 'has-error' : null}`}
                     onBlur={fillInfoCurp}
                 >
                     <label className="control-label" htmlFor="curp">Clave Única de Registro de Población (CURP) *:</label>
                     <InputCURP
-                        name="curp"
+                        name="persona_fisica_curp"
                         className="form-control"
-                        defaultValue={state.curp}
+                        defaultValue={state.persona_fisica_curp}
                         placeholder="Ingresa CURP"
                         onChange={setInfo}
-                        curp={state.curp}
+                        curp={state.persona_fisica_curp}
                         onKeyDownCapture={ToMayus}
                         onBlur={curpValida}
                     />
-                    <small className="form-text form-text-error" id="msg_error_curp" htmlFor="curp" style={{ display: 'none' }}>CURP necesaria</small>
+                    {validacion.persona_fisica_curp && <ErrorInputMsg />}
                 </div>
                 <div className="col-md-3 pt25">
                     <button
@@ -133,74 +137,79 @@ const DatosIndividuo = (props) => {
                         Generar o consultar
                     </button>
                 </div>
-                <div className="col-md-3 m-t-10">
-                    <label className="control-label" htmlFor="sexo">Sexo <span className="form-text">*</span>:</label>
+                {/* sexo_id */}
+                <div className={`col-md-3 ${(validacion.persona_fisica_sexo_id) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="persona_fisica_sexo_id">Sexo <span className="form-text">*</span>:</label>
                     <SelectSexo
                         className='form-control'
-                        defaultValue={state.sexo}
-                        name='sexo'
+                        defaultValue={state.persona_fisica_sexo_id}
+                        name='persona_fisica_sexo_id'
                         onChange={setInfo}
                     />
+                    {validacion.persona_fisica_sexo_id && <ErrorInputMsg />}
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label className="control-label" htmlFor="rfc">Registro Federal de Contribuyentes (RFC) *:</label>
-                        <InputRFC
-                            className='form-control'
-                            placeholder='RFC Persona física'
-                            defaultValue={state.rfc}
-                            rfc={state.rfc}
-                            onKeyPressCapture={ToMayus}
-                            onChange={setInfo}
-                            name='rfc'
-                        />
-                        <small className="form-text form-text-error" htmlFor="rfc" style={{ display: 'none' }}>RFC necesario</small>
-                    </div>
+                {/* rfc */}
+                <div className={`col-md-6 ${(validacion.persona_fisica_rfc) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="persona_fisica_rfc">Registro Federal de Contribuyentes (RFC) *:</label>
+                    <InputRFC
+                        className='form-control'
+                        placeholder='RFC Persona física'
+                        defaultValue={state.persona_fisica_rfc}
+                        rfc={state.persona_fisica_rfc}
+                        onKeyPressCapture={ToMayus}
+                        onChange={setInfo}
+                        name='persona_fisica_rfc'
+                    />
+                    {validacion.persona_fisica_rfc && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-6">
+                {/* documento acreditacion */}
+                <div className={`col-md-6 ${(validacion.persona_fisica_doc_acreditacion_id) ? 'has-error' : null}`}>
                     <label className="control-label">Documento con el que te acreditas<span className="form-text">*</span>:</label>
                     <SelectDocAcreditacion
                         data={documentos_acreditacion}
                         className='form-control'
-                        name='doc_acredita'
-                        key='doc_acredita'
+                        name='persona_fisica_doc_acreditacion_id'
+                        key='persona_fisica_doc_acreditacion_id'
                         onChange={setInfo}
                     />
+                    {validacion.persona_fisica_doc_acreditacion_id && <ErrorInputMsg />}
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-4">
+                {/* edo nacimiento */}
+                <div className={`col-md-4 ${(validacion.persona_fisica_estado_nacimiento_id) ? 'has-error' : null}`}>
                     <label className="control-label">Estado de Nacimiento<span className="form-text">*</span>:</label>
                     <SelectEstados
                         data={estados}
                         className="form-control"
-                        name={"estado_nac_fis"}
-                        key='estado_nac_fis'
+                        name='persona_fisica_estado_nacimiento_id'
+                        key='persona_fisica_estado_nacimiento_id'
                         onChange={setInfo}
                     />
-
-                    <small className="form-text form-text-error" style={{ display: 'none' }} />
+                    {validacion.persona_fisica_estado_nacimiento_id && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4">
-                    <label className="control-label" htmlFor="FnacimientoF">Fecha de nacimiento<span className="form-text">*</span>:</label>
+                {/* fecha nacimiento */}
+                <div className={`col-md-4 ${(validacion.persona_fisica_fecha_nacimiento) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="persona_fisica_fecha_nacimiento">Fecha de nacimiento<span className="form-text">*</span>:</label>
                     <input
-                        name="fecha_nacimiento"
+                        name="persona_fisica_fecha_nacimiento"
                         className="form-control"
                         type="date"
                         placeholder="DD/MM/AAAA"
                         onChange={setInfo}
-                        defaultValue={state.fecha_nacimiento}
+                        defaultValue={state.persona_fisica_fecha_nacimiento}
                     />
-                    <small htmlFor="FnacimientoF" className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
+                    {validacion.persona_fisica_fecha_nacimiento && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4">
-                    <label className="control-label">Estado Civil<span className="form-text">*</span>:</label>
+                {/* estado  civil */}
+                <div className={`col-md-4`}>
+                    <label className="control-label">Estado Civíl:</label>
                     <SelectEdoCivil
                         data={estados_civiles}
-                        name={"edo_civil"}
-                        key="edo_civil"
+                        name="persona_fisica_estado_civil_id"
+                        key="persona_fisica_estado_civil_id"
                         className="form-control"
                         onChange={setInfo}
                     />
@@ -212,7 +221,7 @@ const DatosIndividuo = (props) => {
                     <label htmlFor="phone">Teléfono fijo:</label>
                     <input
                         onChange={setInfo}
-                        name="telefono"
+                        name="persona_fisica_telefono"
                         type="text"
                         maxLength={10}
                         className="form-control"
@@ -224,7 +233,7 @@ const DatosIndividuo = (props) => {
                 <div className="col-md-6 py5">
                     <label htmlFor="phone">Teléfono móvil:</label>
                     <input
-                        name="movil"
+                        name="persona_fisica_celular"
                         type="text"
                         maxLength={10}
                         minLength={10}
@@ -233,32 +242,35 @@ const DatosIndividuo = (props) => {
                         onChange={setInfo}
                     />
                 </div>
-                <div className="col-md-6 py5">
+                {/* nacionalidad_id */}
+                <div className={`col-md-6 py5 ${(validacion.persona_fisica_nacionalidad_id) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="nacionalidad">
                         Nacionalidad
                         <span className="form-text">*</span>:
                     </label>
                     <SelectNacionalidad
-                        defaultValue={state.nacionalidad}
+                        defaultValue={state.persona_fisica_nacionalidad_id}
                         data={nacionalidades}
                         onChange={setInfo}
                         className="form-control"
-                        name="nacionalidad"
-                        key="nacionalidad"
+                        name="persona_fisica_nacionalidad_id"
+                        key="persona_fisica_nacionalidad_id"
                     />
-                    <small htmlFor="nacionalidad" className="form-text form-text-error" style={{ display: 'none' }} />
+                    {validacion.persona_fisica_nacionalidad_id && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-6 py5">
-                    <label className="control-label" htmlFor="etniaF">Grupo indígena de pertenencia:</label>
+                {/* etnia_id */}
+                <div className={`col-md-6 py5 ${(validacion.persona_fisica_tipo_etnia_id) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="persona_fisica_tipo_etnia_id">Grupo indígena de pertenencia <span className="form-text">*</span>:</label>
                     <SelectEtnias
                         data={tipos_etnias}
                         className="form-control"
-                        name="etnia"
+                        name="persona_fisica_tipo_etnia_id"
                         onChange={setInfo}
                     />
+                    {validacion.persona_fisica_tipo_etnia_id && <ErrorInputMsg />}
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 

@@ -7,7 +7,7 @@ import SelectTemGen from '../singles/SelectTemGen';
 
 const DatosDomGeo = (props) => {
 
-    const { state, setState } = props
+    const { state, setState, id_section, validacion } = props
 
     const setInfo = (input) => {
         setState({
@@ -17,7 +17,7 @@ const DatosDomGeo = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <div id={id_section}>
             <div className="row top-buffer">
                 <div className="col-md-12">
                     <h2>Domicilio geográfico de la o el beneficiario</h2>
@@ -249,7 +249,7 @@ const DatosDomGeo = (props) => {
                     />
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 

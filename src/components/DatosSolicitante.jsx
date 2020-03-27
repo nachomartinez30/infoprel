@@ -1,4 +1,4 @@
-import React, { useContext} from 'react'
+import React, { useContext } from 'react'
 /* HELPERS */
 
 /* COMPONENTES PROPIOS */
@@ -7,6 +7,7 @@ import SelectCatalogo from '../singles/SelectCatalogo';
 
 /* CONTEXT */
 import catalogosContext from "./../context/catalogos/catalogosContext";
+import ErrorInputMsg from '../singles/ErrorInputMsg';
 
 const DatosSolicitante = (props) => {
 
@@ -23,7 +24,7 @@ const DatosSolicitante = (props) => {
     const cat_tipos_poseedores = (typeof tipos_poseedores !== 'undefined') ? tipos_poseedores.data : tipos_poseedores
     const cat_tipos_productores = (typeof tipos_productores !== 'undefined') ? tipos_productores.data : tipos_productores
 
-    const { state, setState } = props
+    const { state, setState, validacion, id_section } = props
 
     const setInfo = (input) => {
         setState({
@@ -33,7 +34,7 @@ const DatosSolicitante = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <div id={id_section}>
             <div className="row top-buffer">
                 <div className="col-md-12">
                     <h2>Datos de Solicitante</h2>
@@ -41,7 +42,8 @@ const DatosSolicitante = (props) => {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-12 py5">
+                {/* tipo_tenedor */}
+                <div className={`col-md-12 py5 ${(validacion.tipo_tenedor) ? 'has-error' : null}`}>
                     <div className="form-group">
                         <label className="control-label">La persona solicitante es*:</label>
                         <SelectCatalogo
@@ -50,10 +52,11 @@ const DatosSolicitante = (props) => {
                             name="tipo_tenedor"
                             data={cat_tipos_tenedores}
                         />
-                        <small className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
+                        {validacion.tipo_tenedor && <ErrorInputMsg />}
                     </div>
                 </div>
-                <div className="col-md-6 py5" id="tipo_poseedor">
+                {/* tipo_poseedor */}
+                <div className={`col-md-6 py5 ${(validacion.tipo_poseedor) ? 'has-error' : null}`}>
                     <label className="control-label">Tipo de Poseedor*:</label>
                     <SelectCatalogo
                         onChange={setInfo}
@@ -61,9 +64,10 @@ const DatosSolicitante = (props) => {
                         name="tipo_poseedor"
                         data={cat_tipos_poseedores}
                     />
-                    <small className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
+                    {validacion.tipo_poseedor && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-6 py5" id="tipo_poseedor">
+                {/* tipo_productor */}
+                <div className={`col-md-6 py5 ${(validacion.tipo_productor) ? 'has-error' : null}`}>
                     <label className="control-label">Tipo de Productor*:</label>
                     <SelectCatalogo
                         onChange={setInfo}
@@ -71,7 +75,7 @@ const DatosSolicitante = (props) => {
                         name="tipo_productor"
                         data={cat_tipos_productores}
                     />
-                    <small className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
+                    {validacion.tipo_productor && <ErrorInputMsg />}
                 </div>
                 <div className="col-md-12 py5">
                     <label>Email Solicitante:</label>
@@ -84,7 +88,7 @@ const DatosSolicitante = (props) => {
                     />
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 

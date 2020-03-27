@@ -16,6 +16,7 @@ import SelectTipoPersona from '../singles/SelectTipoPersona';
 import SelectEtnias from '../singles/SelectEtnias';
 import redirectToCURP from '../helpers/redirectToCURP';
 import InputCURP from '../singles/InputCURP';
+import ErrorInputMsg from '../singles/ErrorInputMsg';
 /* CONTEXT */
 import catalogosContext from "./../context/catalogos/catalogosContext";
 
@@ -27,12 +28,12 @@ const InfoPersonaFisica = (props) => {
         nacionalidades,
         tipos_etnias,
         estados_civiles,
-        doc_acreditacion_id,
+        documentos_acreditacion,
         personalidades_juridicas_F,
         estados
     } = catsContext.catalogos
 
-    const { state, setState } = props
+    const { state, setState, validacion, id_section } = props
 
     useEffect(() => {
         // cuando el state cambia
@@ -46,7 +47,7 @@ const InfoPersonaFisica = (props) => {
         })
     }
 
-/* VALORES SDEL STATE */
+    /* VALORES SDEL STATE */
     const {
         nombre,
         apellido_paterno,
@@ -55,7 +56,7 @@ const InfoPersonaFisica = (props) => {
         sexo_id,
         rfc,
         fecha_nacimiento,
-        nacionalidad_id
+        nacionalidad_id,
     } = state
 
     const fillDatosByCURP = () => {
@@ -66,16 +67,16 @@ const InfoPersonaFisica = (props) => {
                 const infoCurp = extractInfoCurp(curp)
                 setState({
                     ...state,
-                    FnacimientoF: moment(`${infoCurp.anio}-${infoCurp.mes}-${infoCurp.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
-                    sexo_fisica: (infoCurp.sexo === 'H') ? 1 : 2,
-                    nacionalidad_fisica: infoCurp.nacionalidad
+                    fecha_nacimiento: moment(`${infoCurp.anio}-${infoCurp.mes}-${infoCurp.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
+                    sexo_id: (infoCurp.sexo === 'H') ? 1 : 2,
+                    nacionalidad_id: infoCurp.nacionalidad
                 })
             }
         }
     }
 
     return (
-        <React.Fragment>
+        <div id={id_section}>
             <div className="row top-buffer">
                 <div className="col-md-12">
                     <h2>Datos Persona Física</h2>
@@ -83,7 +84,7 @@ const InfoPersonaFisica = (props) => {
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-4">
+                <div className={`col-md-4 ${(validacion.nombre) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="nombre">Nombre(s) *:</label>
                     <input
                         defaultValue={nombre}
@@ -96,9 +97,9 @@ const InfoPersonaFisica = (props) => {
                         placeholder="Ingresa tu Nombre"
                     />
                     {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="nombre" style={{ display: 'none' }}>Nombre necesario</small>
+                    {validacion.nombre && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4">
+                <div className={`col-md-4 ${(validacion.apellido_paterno) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="apellido_paterno">Apellido Paterno *:</label>
                     <input
                         defaultValue={apellido_paterno}
@@ -111,9 +112,9 @@ const InfoPersonaFisica = (props) => {
                         onChange={setInfo}
                     />
                     {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="apellido_paterno" style={{ display: 'none' }}>Apellido necesario</small>
+                    {validacion.apellido_paterno && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4">
+                <div className={`col-md-4 ${(validacion.apellido_materno) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="apellido_materno">Apellido Materno :</label>
                     <input
                         defaultValue={apellido_materno}
@@ -126,11 +127,11 @@ const InfoPersonaFisica = (props) => {
                         onChange={setInfo}
                     />
                     {/* max 13 min 13 */}
-                    <small className="form-text form-text-error" htmlFor="apellido_materno" style={{ display: 'none' }}>Apellido necesario</small>
+                    {validacion.apellido_materno && <ErrorInputMsg />}
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-6 col-lg-6 py5"
+                <div className={`col-md-6 col-lg-6 py5  ${(validacion.curp) ? 'has-error' : null}`}
                     onBlur={fillDatosByCURP}
                 >
                     <label className="control-label" htmlFor="curp">Clave Única de Registro de Población (CURP) *:</label>
@@ -144,16 +145,16 @@ const InfoPersonaFisica = (props) => {
                         onKeyDownCapture={ToMayus}
                         onBlur={curpValida}
                     />
-                    <small className="form-text form-text-error" id="msg_error_curp" htmlFor="curp_fisica" style={{ display: 'none' }}>CURP necesaria</small>
+                    {validacion.curp && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-3 pt25">
+                <div className={`col-md-3 pt25`}>
                     <input
                         type="button"
                         className="btn btn-primary"
                         defaultValue="Generar o consultar"
                         onClick={() => redirectToCURP()} />
                 </div>
-                <div className="col-md-3 m-t-10">
+                <div className={`col-md-3 m-t-10 ${(validacion.sexo_id) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="sexo_id">Sexo <span className="form-text">*</span>:</label>
                     <SelectSexo
                         className='form-control'
@@ -162,38 +163,37 @@ const InfoPersonaFisica = (props) => {
                         key='sexo_id'
                         onChange={setInfo}
                     />
+                    {validacion.sexo_id && <ErrorInputMsg />}
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label className="control-label" htmlFor="rfc">Registro Federal de Contribuyentes (RFC) *:</label>
-                        <InputRFC
-                            className='form-control'
-                            placeholder='RFC Persona física'
-                            rfc={rfc}
-                            onKeyPressCapture={ToMayus}
-                            onChange={setInfo}
-                            name='rfc'
-                            key='rfc'
-                        />
-
-                        <small className="form-text form-text-error" htmlFor="rfc" style={{ display: 'none' }}>RFC necesario</small>
-                    </div>
+                <div className={`col-md-6 ${(validacion.rfc) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="rfc">Registro Federal de Contribuyentes (RFC) *:</label>
+                    <InputRFC
+                        className='form-control'
+                        placeholder='RFC Persona física'
+                        rfc={rfc}
+                        onKeyPressCapture={ToMayus}
+                        onChange={setInfo}
+                        name='rfc'
+                        key='rfc'
+                    />
+                    {validacion.rfc && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-6">
+                <div className={`col-md-6 ${(validacion.doc_acreditacion_id) ? 'has-error' : null}`}>
                     <label className="control-label">Documento con el que te acreditas<span className="form-text">*</span>:</label>
                     <SelectDocAcreditacion
-                        data={doc_acreditacion_id}
+                        data={documentos_acreditacion}
                         className='form-control'
                         name='doc_acreditacion_id'
                         key='doc_acreditacion_id'
                         onChange={setInfo}
                     />
+                    {validacion.doc_acreditacion_id && <ErrorInputMsg />}
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-4">
+                <div className={`col-md-4 ${(validacion.estado_nacimiento_id) ? 'has-error' : null}`}>
                     <label className="control-label">Estado de Nacimiento<span className="form-text">*</span>:</label>
                     <SelectEstados
                         data={estados}
@@ -203,9 +203,9 @@ const InfoPersonaFisica = (props) => {
                         onChange={setInfo}
                     />
 
-                    <small className="form-text form-text-error" style={{ display: 'none' }} />
+                    {validacion.estado_nacimiento_id && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4">
+                <div className={`col-md-4 ${(validacion.fecha_nacimiento) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="fecha_nacimiento">Fecha de nacimiento<span className="form-text">*</span>:</label>
                     <input
                         name="fecha_nacimiento"
@@ -215,9 +215,9 @@ const InfoPersonaFisica = (props) => {
                         onChange={setInfo}
                         defaultValue={fecha_nacimiento}
                     />
-                    <small htmlFor="fecha_nacimiento" className="form-text form-text-error" style={{ display: 'none' }}>Dato necesario</small>
+                    {validacion.fecha_nacimiento && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-4">
+                <div className={`col-md-4 ${(validacion.estado_civil_id) ? 'has-error' : null}`}>
                     <label className="control-label">Estado Civil<span className="form-text">*</span>:</label>
                     <SelectEdoCivil
                         data={estados_civiles}
@@ -226,10 +226,11 @@ const InfoPersonaFisica = (props) => {
                         className="form-control"
                         onChange={setInfo}
                     />
+                    {validacion.estado_civil_id && <ErrorInputMsg />}
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-4">
+                <div className={`col-md-4 ${(validacion.nacionalidad_id) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="nacionalidad_fisica">Nacionalidad
         <span className="form-text">*</span>:</label>
                     <SelectNacionalidad
@@ -240,9 +241,9 @@ const InfoPersonaFisica = (props) => {
                         name="nacionalidad_id"
                         key="nacionalidad_id"
                     />
-                    <small htmlFor="nacionalidad_id" className="form-text form-text-error" style={{ display: 'none' }} />
+                    {validacion.nacionalidad_id && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-3">
+                <div className={`col-md-3`}>
                     <label htmlFor="phone">Teléfono fijo:</label>
                     <input
                         onChange={setInfo}
@@ -253,9 +254,9 @@ const InfoPersonaFisica = (props) => {
                         placeholder="Teléfono fijo"
                     />
                     {/* solo numeros */}
-                    <small className="form-text form-text-error" style={{ display: 'none' }} />
+                    {validacion.nacionalidad_id && <ErrorInputMsg />}
                 </div>
-                <div className="col-md-3">
+                <div className={`col-md-3`}>
                     <label htmlFor="phone">Teléfono móvil:</label>
                     <input
                         name="celular"
@@ -269,7 +270,7 @@ const InfoPersonaFisica = (props) => {
                 </div>
             </div>
             <div className="row py5">
-                <div className="col-md-6">
+                <div className={`col-md-6 ${(validacion.tipo_persona) ? 'has-error' : null}`}>
                     <label className="control-label">Como beneficiario eres<span className="form-text">*</span>:</label>
                     <SelectTipoPersona
                         data={personalidades_juridicas_F}
@@ -279,8 +280,8 @@ const InfoPersonaFisica = (props) => {
                         onChange={setInfo}
                     />
                 </div>
-                <div className="col-md-6">
-                    <label className="control-label" htmlFor="tipo_etnia_id">Grupo indígena de pertenencia:</label>
+                <div className={`col-md-6 ${(validacion.tipos_etnias) ? 'has-error' : null}`}>
+                    <label className="control-label" htmlFor="tipo_etnia_id">Grupo indígena de pertenencia<span>*</span>:</label>
                     <SelectEtnias
                         data={tipos_etnias}
                         className="form-control"
@@ -288,9 +289,10 @@ const InfoPersonaFisica = (props) => {
                         key="tipo_etnia_id"
                         onChange={setInfo}
                     />
+                    {validacion.tipos_etnias && <ErrorInputMsg />}
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 
