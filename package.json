@@ -17,6 +17,7 @@
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
+    "react-scroll": "^1.7.16",
     "sweetalert2": "^9.7.2",
     "sweetalert2-react-content": "^3.0.1"
   },
@@ -24,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "createSingle": "node .\\createSingles.js"
   },
   "eslintConfig": {
     "extends": "react-app"

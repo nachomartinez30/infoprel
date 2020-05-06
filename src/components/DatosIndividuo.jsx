@@ -19,6 +19,7 @@ import catalogosContext from "./../context/catalogos/catalogosContext";
 import ErrorInputMsg from '../singles/ErrorInputMsg';
 
 const DatosIndividuo = (props) => {
+    const { state, setState, validacion} = props
 
     /* *******************************************************************
      * componente que permite registrar en un STATE que se pase por PROPS
@@ -37,17 +38,16 @@ const DatosIndividuo = (props) => {
     } = catsContext.catalogos
 
 
-    const { state, setState, validacion, id_section } = props
 
     const fillInfoCurp = () => {
         /* Extrae la informacion de la CURP y autocompleta fechga de nacimiento y sexo  */
 
-        const dataExtracted = (typeof state.curp != 'undefined') ? extractInfoCurp(state.curp) : ''
+        const dataExtracted = (typeof state.persona_fisica_curp != 'undefined') ? extractInfoCurp(state.persona_fisica_curp) : ''
         setState({
             ...state,
-            fecha_nacimiento: moment(`${dataExtracted.anio}-${dataExtracted.mes}-${dataExtracted.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
-            sexo: (dataExtracted.sexo === 'H') ? 1 : 2,
-            nacionalidad: dataExtracted.nacionalidad
+            persona_fisica_fecha_nacimiento: moment(`${dataExtracted.anio}-${dataExtracted.mes}-${dataExtracted.dia}`, "YY-MM-DD").format("YYYY-MM-DD"),
+            persona_fisica_sexo_id: (dataExtracted.sexo === 'H') ? 1 : 2,
+            persona_fisica_nacionalidad_id: dataExtracted.nacionalidad
         })
     }
 
@@ -61,7 +61,7 @@ const DatosIndividuo = (props) => {
 
 
     return (
-        <div id={id_section}>
+        <React.Fragment>
             <div className="row py5">
                 {/* nombre */}
                 <div className={`col-md-4 py5 ${(validacion.persona_fisica_nombre) ? 'has-error' : null}`}>
@@ -116,7 +116,7 @@ const DatosIndividuo = (props) => {
                 <div className={`col-md-6 col-lg-6 py5 ${(validacion.persona_fisica_curp) ? 'has-error' : null}`}
                     onBlur={fillInfoCurp}
                 >
-                    <label className="control-label" htmlFor="curp">Clave Única de Registro de Población (CURP) *:</label>
+                    <label className="control-label" htmlFor="persona_fisica_curp">Clave Única de Registro de Población (CURP) *:</label>
                     <InputCURP
                         name="persona_fisica_curp"
                         className="form-control"
@@ -270,7 +270,7 @@ const DatosIndividuo = (props) => {
                     {validacion.persona_fisica_tipo_etnia_id && <ErrorInputMsg />}
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 

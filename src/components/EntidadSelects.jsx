@@ -8,7 +8,7 @@ const EntidadSelects = (props) => {
     /* Context catalogos */
     const catsContext = useContext(catalogosContext)
     const { estados } = catsContext.catalogos
-    const { textoComplemetarioLabel, nameComplement, onBlur } = props
+    const { textoComplemetarioLabel, onBlur, validacion } = props
 
     const [entidad, setEntidad] = useState({
         municipios: [],
@@ -73,26 +73,26 @@ const EntidadSelects = (props) => {
 
     return (
         <React.Fragment>
-            <div className='col-md-4'>
+            <div className={`col-md-4`}>
                 <label className="control-label"> Estado de {textoComplemetarioLabel} *:</label>
                 <SelectEstados
                     data={estados}
                     className='form-control'
-                    name={`estado_${nameComplement}`}
+                    name="estado_id"
                     onChange={getMunicipio}
                     onBlur={onBlur}
                 />
             </div>
             {/* MUNICIPIO */}
-            <div className='col-md-4'>
+            <div className={`col-md-4`}>
                 <label className="control-label"> Municipio de {textoComplemetarioLabel} *:</label>
                 <select
                     className="form-control"
-                    name={`municipio_${nameComplement}`}
+                    name={`municipio_id`}
                     onChange={getLocalidades}
                     onBlur={onBlur}
                 >
-                    {/* <option key='' value=''>--Seleccione--</option> */}
+                    
                     {entidad.municipios.map((item) => <option key={item.cve_mun} value={item.cve_mun}>{item.nom_mun}</option>)}
                 </select>
             </div>
@@ -101,10 +101,10 @@ const EntidadSelects = (props) => {
                 <label className="control-label"> Localidad de {textoComplemetarioLabel} *:</label>
                 <select
                     className="form-control"
-                    name={`localidad_${nameComplement}`}
+                    name={`localidad_id`}
                     onBlur={onBlur}
                 >
-                    {/* <option key='' value=''>--Seleccione--</option> */}
+                    
                     {entidad.localidades.map(item => <option key={item.localidad_id} value={item.cve_loc}>{item.nom_loc}</option>)}
                 </select>
             </div>

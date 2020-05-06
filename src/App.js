@@ -9,7 +9,7 @@ import Generales from './routhes/Generales';
 import WizardSteps from './singles/WizardSteps';
 import ApoyosState from "./context/apoyos/apoyosState";
 import Apoyos from './routhes/Apoyos';
-import Firma from './routhes/Firma';
+import Finalizar from './routhes/Finalizar';
 import CatalogosState from './context/catalogos/catalogosState';
 
 
@@ -24,7 +24,7 @@ function App() {
               <Route exact path="/" component={Bienvenida} />
               <Route exact path="/generales" component={Generales} />
               <Route exact path="/apoyos" component={Apoyos} />
-              <Route exact path="/firmar" component={Firma} />
+              <Route exact path="/finalizar" component={Finalizar} />
             </Switch>
             <Footer />
           </Router>

@@ -1,4 +1,4 @@
-import { AGREGAR_REGISTRO, AGREGAR_CERTIFICADO_KEY } from '../../types'
+import { AGREGAR_REGISTRO,AGREGAR_CERTIFICADO_KEY } from '../../types'
 
 
 export default (estado, accion) => {

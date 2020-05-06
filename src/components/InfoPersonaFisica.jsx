@@ -33,7 +33,7 @@ const InfoPersonaFisica = (props) => {
         estados
     } = catsContext.catalogos
 
-    const { state, setState, validacion, id_section } = props
+    const { state, setState, validacion } = props
 
     useEffect(() => {
         // cuando el state cambia
@@ -76,7 +76,7 @@ const InfoPersonaFisica = (props) => {
     }
 
     return (
-        <div id={id_section}>
+        <React.Fragment>
             <div className="row top-buffer">
                 <div className="col-md-12">
                     <h2>Datos Persona Física</h2>
@@ -270,17 +270,18 @@ const InfoPersonaFisica = (props) => {
                 </div>
             </div>
             <div className="row py5">
-                <div className={`col-md-6 ${(validacion.tipo_persona) ? 'has-error' : null}`}>
+                <div className={`col-md-6 ${(validacion.tipo_solicitante_id) ? 'has-error' : null}`}>
                     <label className="control-label">Como beneficiario eres<span className="form-text">*</span>:</label>
                     <SelectTipoPersona
                         data={personalidades_juridicas_F}
-                        key='tipo_persona'
-                        name="tipo_persona"
+                        key='tipo_solicitante_id'
+                        name="tipo_solicitante_id"
                         className="form-control"
                         onChange={setInfo}
                     />
+                    {validacion.tipo_solicitante_id && <ErrorInputMsg />}
                 </div>
-                <div className={`col-md-6 ${(validacion.tipos_etnias) ? 'has-error' : null}`}>
+                <div className={`col-md-6 ${(validacion.tipo_etnia_id) ? 'has-error' : null}`}>
                     <label className="control-label" htmlFor="tipo_etnia_id">Grupo indígena de pertenencia<span>*</span>:</label>
                     <SelectEtnias
                         data={tipos_etnias}
@@ -289,10 +290,10 @@ const InfoPersonaFisica = (props) => {
                         key="tipo_etnia_id"
                         onChange={setInfo}
                     />
-                    {validacion.tipos_etnias && <ErrorInputMsg />}
+                    {validacion.tipo_etnia_id && <ErrorInputMsg />}
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 

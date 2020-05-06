@@ -7,7 +7,6 @@ import catalogosReducer from './catalogosReducer'
 
 const CatalogosState = (props) => {
 
-
     const stateInicial = {
         catalogos: {
             some: null

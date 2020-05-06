@@ -14,7 +14,7 @@ import SelectEtnias from '../singles/SelectEtnias';
 
 const InfoPersonaMoral = (props) => {
 
-    const { setState, state, validacion, id_section } = props
+    const { setState, state, validacion } = props
 
     const catsContext = useContext(catalogosContext)
     const {
@@ -67,7 +67,7 @@ const InfoPersonaMoral = (props) => {
     }, [state])
 
     return (
-        <div id={id_section}>
+        <React.Fragment>
             <div className="row top-buffer">
                 <div className="col-md-12">
                     <h2>Datos Persona Moral</h2>
@@ -312,7 +312,7 @@ const InfoPersonaMoral = (props) => {
             </div>
             {/* INTEGRANTES DE PERSONA MORAL */}
 
-        </div>
+        </React.Fragment>
     );
 }
 

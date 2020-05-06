@@ -50,9 +50,6 @@ const FormaDigitalForm = (props) => {
 
     const checkCERTKey = () => {
 
-
-        // return <Redirect push to='/target' />
-
         /* ENVÍO DE API para varlidar certificado llave y password */
         const { certificado, llave, pass, rfc } = valores;
 

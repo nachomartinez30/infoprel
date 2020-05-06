@@ -1,7 +1,7 @@
 import React from 'react'
-const ErrorInputMsg = () => {
+const ErrorInputMsg = ({ msg = 'Este campo es necesario' }) => {
     return (
-        <span class="help-block">Este campo es necesario</span>
+        <span class="help-block">{msg}</span>
 
     );
 }

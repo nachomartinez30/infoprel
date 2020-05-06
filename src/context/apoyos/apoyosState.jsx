@@ -26,7 +26,8 @@ const ApoyosState = (props) => {
             notificaciones: null,
             domicilio_geografico: null,
             predios: null,
-            solicitud: null
+            solicitud: null,
+            token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjdmODIyNmRjOTRiNzY3MzVjNTU0ZjkwMzcwY2MxOGQwODUyNTRhMTg0NmQxMWY4YmI5YjQxNmVhMTg0ZTMwMmM3MzcyZmQxYjA4MWE1Nzg2In0.eyJhdWQiOiIyIiwianRpIjoiN2Y4MjI2ZGM5NGI3NjczNWM1NTRmOTAzNzBjYzE4ZDA4NTI1NGExODQ2ZDExZjhiYjliNDE2ZWExODRlMzAyYzczNzJmZDFiMDgxYTU3ODYiLCJpYXQiOjE1ODc1NzE5ODEsIm5iZiI6MTU4NzU3MTk4MSwiZXhwIjoxNTg3NjA3OTgxLCJzdWIiOiI1NyIsInNjb3BlcyI6W119.eRSEhuL5oFrY6LuJcnK2KoFAP_p69lCfYQST7ct-fqmFLwzw_KXhIzhW6YSOUvwydv9eWNLXvwl9vCVGOZYCsk4eYYz0wRgzDSwdLVi34baPJI4CB6nUUQRLEVeEvhrTCyP3iLAcJkBf8FhzV1OdH2egjbeyEENiHkCI3uGe_mPC4vUkqXnVOfGFlZakOCBxSD4sVoCjuzFyiY6rGh91GgWbwGQdO6gr7OMU7BKQ8Je-nUaesVGvyB93mkDxVpaDcgdartuSZmu0excTGzIwwxQZOYHlU366geDaTU2SkDMrt1c2H8weT-c96n3oqxj0OGBjnYRvV_qDh9ZfuD4d9NN3qsXG7op5Bnkck_pBTzELT8ieAEcK0uDm_6WlxyrytMJQVGPYBwjEjdwLdPxoTWTIymy3qWxDAhtH111CCidVM3wIL6gr5_3MYecqRLC-nh2ib0JAZmavzsr2zPg_N6gqGBx3jSKI7aKYAg3XUqsqIxegB-_nC1VwsfOfKqwm6ebq5NqP9xSL-3t-ZVM7_ve87t1jmSLjmFplB4YfKABcAaUYeMxb6UPkc1miq4Isj-aT6tC1xAEN2pwyHgyOKn70wGHx228DoLzBUeeQKNbZLUOmFD2Lp9zzBnzuHOjxJ_gz9e5BUZnm39_S0amLt_AuShkHPX8xVmYudNxDabk'
         }
     }
 

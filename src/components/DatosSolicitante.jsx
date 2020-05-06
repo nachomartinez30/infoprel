@@ -1,15 +1,16 @@
 import React, { useContext } from 'react'
 /* HELPERS */
-
 /* COMPONENTES PROPIOS */
 import LineaDivision from '../singles/LineaDivision';
 import SelectCatalogo from '../singles/SelectCatalogo';
-
+import ErrorInputMsg from '../singles/ErrorInputMsg';
 /* CONTEXT */
 import catalogosContext from "./../context/catalogos/catalogosContext";
-import ErrorInputMsg from '../singles/ErrorInputMsg';
 
 const DatosSolicitante = (props) => {
+    
+    const { state, setState, validacion} = props
+
 
     const catsContext = useContext(catalogosContext)
     const {
@@ -24,7 +25,6 @@ const DatosSolicitante = (props) => {
     const cat_tipos_poseedores = (typeof tipos_poseedores !== 'undefined') ? tipos_poseedores.data : tipos_poseedores
     const cat_tipos_productores = (typeof tipos_productores !== 'undefined') ? tipos_productores.data : tipos_productores
 
-    const { state, setState, validacion, id_section } = props
 
     const setInfo = (input) => {
         setState({
@@ -34,7 +34,7 @@ const DatosSolicitante = (props) => {
     }
 
     return (
-        <div id={id_section}>
+        <React.Fragment>
             <div className="row top-buffer">
                 <div className="col-md-12">
                     <h2>Datos de Solicitante</h2>
@@ -88,7 +88,7 @@ const DatosSolicitante = (props) => {
                     />
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 
